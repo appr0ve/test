@@ -24,7 +24,7 @@ $(LIB).$(VER): $(O)
 	$(CC) $(CFLAGS) -o $@ $(LDLIBS)
 
 ifndef PREFIX
-PREFIX=/opt
+PREFIX=/opt/$(EXE)
 endif
 
 install:
