@@ -35,10 +35,13 @@ install:
 clean:
 	rm -f $(CLN)
 po_init:
+	mkdir -p po/$(lang)
 	msginit --input $(EXE).pot --output po/$(lang)/rdb.po --locale $(lang)
 po_update:
 	msgmerge --update po/$(lang)/$(EXE).po $(EXE).pot
 po_template: $(EXE).c
 	xgettext --keyword=_ --language=c --sort-output -o $(EXE).pot $(EXE).c
+po_mo: LC_MSG_DIR=po/$(lang)/LC_MESSAGES
 po_mo:
-	msgfmt --output po/$(lang)/$(EXE).mo po/$(lang)/$(EXE).po
+	mkdir -p $(LC_MSG_DIR)
+	msgfmt --output $(LC_MSG_DIR)/$(EXE).mo po/$(lang)/$(EXE).po

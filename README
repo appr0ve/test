@@ -46,6 +46,11 @@ By default installation perform to /opt directory[2].
 If you prefer another destination change shell enviroment:
 > PREFIX=$MY_PREFER_DIR make install
 
+Using
+
+This program is multilanguages (Russian and English).
+You can assign prefer language by LC_MESSAGES variable.
+
 Localization
 
 First you are need get fresh template:
