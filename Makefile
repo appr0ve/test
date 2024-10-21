@@ -10,9 +10,9 @@ CLN=$(EXE) $(LIB).$(VER)
 # Only Simply Linux have broken symlink for `cc`?
 # x86_64-alt-linux-gcc: No such file or directory 
 CC=gcc-10
-H=`pkg-config --cflags glib-2.0`
+H=`pkg-config --cflags glib-2.0 json-glib-1.0`
 CFLAGS=-Wall -g -O3 -std=gnu17 $(H)
-LDLIBS=`pkg-config --libs glib-2.0`
+LDLIBS=`pkg-config --libs glib-2.0 json-glib-1.0`
 
 all: $(LIB) $(EXE)
 
