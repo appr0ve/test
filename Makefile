@@ -34,3 +34,7 @@ install:
 	install -m 644 $(LIB_H) $(PREFIX)/include/
 clean:
 	rm -f $(CLN)
+po:
+	xgettext --keyword=_ --language=c --sort-output -o $(EXE).pot $(EXE).c
+mo:
+	msgfmt --output po/$(lang)/$(EXE).mo po/$(lang)/$(EXE).po

@@ -9,6 +9,9 @@ Prerequisites
 Before start building install followed dependencies:
 > apt-get install -y gcc-10 make glib2-devel libjson-devel libgio-devel
 
+Additional dependencies:
+> apt-get install -y gettext-tools
+
 Notice on compiler selection:
 Simply Linux have broken symlink to gcc-10 [BUG].
 We using hardcode link to executable in Makefile.
@@ -42,6 +45,11 @@ By default installation perform to /opt directory[2].
 
 If you prefer another destination change shell enviroment:
 > PREFIX=$MY_PREFER_DIR make install
+
+Localization
+
+You can generate translation for program.
+> lang=ru make mo
 
 [1] https://rdb.altlinux.org/api/
 [2] https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch03s13.html
