@@ -46,10 +46,16 @@ By default installation perform to /opt directory[2].
 If you prefer another destination change shell enviroment:
 > PREFIX=$MY_PREFER_DIR make install
 
-Using
+Usage
 
 This program is multilanguages (Russian and English).
 You can assign prefer language by LC_MESSAGES variable.
+
+Another available variables for change bevahiour:
+RDB_API_URL assign alternative RDB API url
+  default: https://rdb.altlinux.org/api/
+LOCALEDIR change default directory for local-n files (testing-purpose)
+  default: /usr/share/locale
 
 Localization
 
