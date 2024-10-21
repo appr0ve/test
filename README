@@ -36,8 +36,8 @@ Read more in `Installation` section below.
 Other targets:
 - clean
   Remove binary targets.
-- po
-  Perform preparation localization files.
+- po_*
+  Localization related files.
 
 Installation
 
@@ -48,8 +48,20 @@ If you prefer another destination change shell enviroment:
 
 Localization
 
-You can generate translation for program.
-> lang=ru make mo
+First you are need get fresh template:
+> make po_template
+
+If you prefer add new translation get follow:
+> lang=$PREFER_LANG make po_init
+Notice: $PREFER_LANG must be ISO 639-1 encoded.
+You can try get your code by this:
+> echo $LANG | cut -b 1,2
+
+In another way after refresh template apply new changes:
+> lang=$PREFER_LANG make po_update
+
+If you are job done, upgrade locale file:
+> lang=$PREFER_LANG make po_mo
 
 [1] https://rdb.altlinux.org/api/
 [2] https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch03s13.html

@@ -34,7 +34,11 @@ install:
 	install -m 644 $(LIB_H) $(PREFIX)/include/
 clean:
 	rm -f $(CLN)
-po:
+po_init:
+	msginit --input $(EXE).pot --output po/$(lang)/rdb.po --locale $(lang)
+po_update:
+	msgmerge --update po/$(lang)/$(EXE).po $(EXE).pot
+po_template: $(EXE).c
 	xgettext --keyword=_ --language=c --sort-output -o $(EXE).pot $(EXE).c
-mo:
+po_mo:
 	msgfmt --output po/$(lang)/$(EXE).mo po/$(lang)/$(EXE).po
