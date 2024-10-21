@@ -1,4 +1,5 @@
 *.so.*
 *.pot
+*.swp
 rdb
 po

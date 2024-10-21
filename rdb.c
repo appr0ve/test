@@ -30,7 +30,9 @@ static GOptionEntry entries[] =
   { NULL }
 };
 
-int main (int argc, char *argv[]) {
+gchar* assign_var(const gchar *, const gchar *);
+
+int main (int argc, gchar *argv[]) {
   GError *error = NULL;
   /* We are using that for parsing cli options */
   GOptionContext *context;
@@ -38,11 +40,9 @@ int main (int argc, char *argv[]) {
   /* Assign LOCALEDIR for gettext
    * (testing-purpose)
    */
-  const char * LOCALEDIR = g_getenv("LOCALEDIR");
-  if(!g_getenv("LOCALEDIR"))
-    g_message("true");
-  if(!g_getenv("LOCALEDIR"))
-    LOCALEDIR = "/usr/share/locale";
+  const gchar * LOCALEDIR = assign_var ("LOCALEDIR", "/usr/share/locale");
+  const gchar * RDB_API_URL = assign_var ("RDB_API_URL", "https://rdb.altlinux.org/api/");
+  //TODO
 
   /* Initialize gettext routines */
   setlocale (LC_ALL, "");
@@ -75,4 +75,11 @@ int main (int argc, char *argv[]) {
 gpointer print_version () {
   g_print ("%s %d\n", GETTEXT_PACKAGE, VERSION);
   return NULL;
+}
+
+gchar * assign_var (const gchar * var, const gchar * def) {
+  if(!g_getenv(var))
+    return (gchar *) def;
+  else
+    return (gchar *) g_getenv(var);
 }
