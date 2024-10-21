@@ -1,0 +1,47 @@
+This is README file for rdb client.
+rdb client interact with ALTRepo API[1].
+
+Notice for end users:
+This program developed only for demonstrative purpose.
+
+Prerequisites
+
+Before start building install followed dependencies:
+> apt-get install -y gcc-10 make glib2-devel libjson-devel libgio-devel
+
+Notice on compiler selection:
+Simply Linux have broken symlink to gcc-10 [BUG].
+We using hardcode link to executable in Makefile.
+
+After that get source code for program from github repo:
+> git clone https://github.com/appr0ve/test
+or (you can change wget on somebody else)
+> wget https://github.com/appr0ve/test/archive/refs/heads/main.tar.gz
+> tar xf main.tar.gz
+
+Building
+
+We are assign followed two binary targets (rdb and librdb.so):
+- rdb
+  Client with command line interface without interative mode.
+- librdb.so
+  Shared library for using with rdb client.
+
+Installation proccess starting by `install` target.
+Read more in `Installation` section below.
+
+Other targets:
+- clean
+  Remove binary targets.
+- po
+  Perform preparation localization files.
+
+Installation
+
+By default installation perform to /opt directory[2].
+
+If you prefer another destination change shell enviroment:
+> PREFIX=$MY_PREFER_DIR make install
+
+[1] https://rdb.altlinux.org/api/
+[2] https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch03s13.html
