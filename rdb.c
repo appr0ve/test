@@ -28,14 +28,19 @@ gpointer print_branches (RdbApi*);
 gchar * get_property (RdbApi *api, gchar *property);
 gchar * set_property (RdbApi *api, gchar *property, gchar *value);
 
-static gboolean print, control, compare, list = FALSE;
+static gboolean print, control, target,
+                list_branches, list_arches,
+                compare_packages, compare_versions = FALSE;
 
 static GOptionEntry entries[] =
 {
   { "version", 'v', 0, G_OPTION_ARG_NONE, &print, "Print version", NULL },
-  { "control", '1', 0, G_OPTION_ARG_NONE, &control, "Control branch", NULL },
-  { "compare", '2', 0, G_OPTION_ARG_NONE, &compare, "Comparable branch", NULL },
-  { "list", 'l', 0, G_OPTION_ARG_NONE, &list, "List availaible branches", NULL },
+  { "control", '1', 0, G_OPTION_ARG_NONE, &control, "Control branch", "BRANCH" },
+  { "target", '2', 0, G_OPTION_ARG_NONE, &target, "Target branch", "BRANCH" },
+  { "list-branches", 'b', 0, G_OPTION_ARG_NONE, &list_branches, "List availaible branches", NULL },
+  { "list-arches", 'a', 0, G_OPTION_ARG_NONE, &list_arches, "List CPU arch-s available", NULL },
+  { "compare-packages", 'p', 0, G_OPTION_ARG_NONE, &compare_packages, "Compare packages beetwen two branches", NULL },
+  { "compare-versions", 'u', 0, G_OPTION_ARG_NONE, &compare_versions, "Compare version beetwen two branches", NULL },
   { NULL }
 };
 
@@ -75,16 +80,15 @@ int main (int argc, gchar *argv[]) {
     g_print ("%s: %s\n", _("Option parsing failed"), error->message);
     exit (1);
   }
-  /* TODO */
   if (print) {
     print_version();
   }
-  if (!print && !list && (!control || !compare)) {
-    g_print ("%s\n", _("Control and compare options must assign!"));
-    exit (1);
+
+  if (list_branches) {
+    rdb_api_get_branches(api, &error);
   }
-  if (list) {
-    print_branches(api);
+  if (list_arches) {
+    rdb_api_get_arches(api, &error);
   }
 
   return 0;
@@ -96,15 +100,6 @@ int main (int argc, gchar *argv[]) {
 gpointer print_version () {
   g_print ("%s %d\n", GETTEXT_PACKAGE, VERSION);
   return NULL;
-}
-gpointer print_branches (RdbApi *api) {
-  GError * error = NULL;
-    rdb_api_get_branches(api, &error);
-    return NULL;
-  /*} else {
-    g_print ("%s\n", _("Get branches status failed"));
-    exit (1);
-  }*/
 }
 
 gchar * get_property (RdbApi *api, gchar *property) {

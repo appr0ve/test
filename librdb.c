@@ -160,3 +160,46 @@ rdb_api_get_branches(RdbApi *self, GError **error)
     g_print ("%s\n", json_array_get_string_element(array, i));
   }
 }
+
+void
+rdb_api_get_arches(RdbApi *self, GError **error)
+{
+  g_return_if_fail (RDB_IS_API (self));
+  g_return_if_fail (error == NULL || *error == NULL);
+
+  GFile * arches;
+  const gchar * errata = g_strconcat(self->url, "site/all_pkgset_archs?branch=p10");
+  arches = g_file_new_for_uri (errata);
+  GError * err = NULL;
+  GFileInputStream *stream = g_file_read (arches, NULL, &err);
+  g_assert_no_error (err);
+
+  JsonParser * parser;
+  JsonNode   * node;
+
+  parser = json_parser_new ();
+  json_parser_load_from_stream (parser, G_INPUT_STREAM (stream), NULL, &err);
+  g_assert_no_error (err);
+  g_assert (stream != NULL);
+
+  node = json_parser_get_root (parser);
+  g_assert (node != NULL);
+  g_assert (JSON_NODE_HOLDS_OBJECT(node));
+
+  JsonObject * obj = json_node_get_object (node);
+
+  JsonArray * array = json_object_get_array_member (obj, "archs");
+  g_assert (array != NULL);
+
+  gint count = json_array_get_length(array);
+  gint i;
+  JsonNode * nod[count];
+  JsonObject * objj[count];
+  JsonArray * arr[count];
+  for (i = 0; i < count; i++) {
+    nod[i] = json_array_get_element (array, i);
+    g_assert (JSON_NODE_HOLDS_OBJECT (nod[i]));
+    objj[i] = json_node_get_object (nod[i]);
+    g_print ("%s\n", json_object_get_string_member (objj[i], "arch"));
+  }
+}
