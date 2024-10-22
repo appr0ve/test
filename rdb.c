@@ -25,6 +25,7 @@
 #define VERSION 1
 gpointer print_version ();
 gpointer print_branches (RdbApi*);
+gchar * get_property (RdbApi *api, gchar *property);
 
 static gboolean print, control, compare, list = FALSE;
 
@@ -37,8 +38,6 @@ static GOptionEntry entries[] =
   { NULL }
 };
 
-gchar* assign_var(const gchar *, const gchar *);
-
 int main (int argc, gchar *argv[]) {
   GError *error = NULL;
   /* We are using that for parsing cli options */
@@ -49,10 +48,11 @@ int main (int argc, gchar *argv[]) {
   /* Assign LOCALEDIR for gettext
    * (testing-purpose)
    */
-  const gchar * LOCALEDIR = assign_var ("LOCALEDIR", "/usr/share/locale");
-  const gchar * RDB_API_URL = assign_var ("RDB_API_URL", "https://rdb.altlinux.org/api/");
+  const gchar * LOCALEDIR = "/usr/share/locale";
+  if(g_getenv("LOCALEDIR"))
+    LOCALEDIR = g_getenv("LOCALEDIR");
 
-  api->url = (gchar*) RDB_API_URL;
+  g_print("Currect RDB URL: %s\n", get_property(api, "url"));
 
   /* Initialize gettext routines */
   setlocale (LC_ALL, "");
@@ -95,7 +95,6 @@ gpointer print_version () {
 }
 gpointer print_branches (RdbApi *api) {
   gint * status = NULL;
-  g_print ("%s\n", api->url);
   if (!status) {
     return NULL;
   } else {
@@ -104,9 +103,12 @@ gpointer print_branches (RdbApi *api) {
   }
 }
 
-gchar * assign_var (const gchar * var, const gchar * def) {
-  if(!g_getenv(var))
-    return (gchar *) def;
-  else
-    return (gchar *) g_getenv(var);
+gchar * get_property (RdbApi *api, gchar *property) {
+  gchar *value;
+  GValue val = G_VALUE_INIT;
+  g_value_init (&val, G_TYPE_STRING);
+  g_object_get_property(G_OBJECT (api), property, &val);
+  value = g_strdup (g_value_get_string(&val));
+  g_value_unset (&val);
+  return value;
 }
