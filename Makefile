@@ -7,9 +7,7 @@ VER=1
 # Trash
 CLN=$(EXE) $(LIB).so
 
-# Only Simply Linux have broken symlink for `cc`?
-# x86_64-alt-linux-gcc: No such file or directory 
-CC=gcc-10
+CC=gcc
 H=`pkg-config --cflags glib-2.0 json-glib-1.0`
 S=-I$(PWD)/include
 CFLAGS=-Wall -g -O3 -std=gnu17 $(H) $(S)

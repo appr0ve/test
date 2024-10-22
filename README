@@ -12,10 +12,6 @@ Before start building install followed dependencies:
 Additional dependencies:
 > apt-get install -y gettext-tools
 
-Notice on compiler selection:
-Simply Linux have broken symlink to gcc-10 [BUG].
-We using hardcode link to executable in Makefile.
-
 After that get source code for program from github repo:
 > git clone https://github.com/appr0ve/test
 or (you can change wget on somebody else)
