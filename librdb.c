@@ -3,6 +3,7 @@
  */
 #include <rdb/rdb.h>
 #include <gio/gio.h>
+#include <json-glib/json-glib.h>
 
 G_DEFINE_TYPE (RdbApi, rdb_api, G_TYPE_OBJECT)
 
@@ -63,7 +64,7 @@ rdb_api_set_property (GObject      *object,
 static void
 rdb_api_get_property (GObject      *object,
                       guint         property_id,
-                      const GValue *value,
+                      GValue *value,
                       GParamSpec   *pspec)
 {
   RdbApi *self = RDB_API (object);
@@ -125,8 +126,37 @@ rdb_api_init (RdbApi *self)
 }
 
 void
-rdb_api_setup_url(RdbApi *self, GError **error)
+rdb_api_get_branches(RdbApi *self, GError **error)
 {
   g_return_if_fail (RDB_IS_API (self));
   g_return_if_fail (error == NULL || *error == NULL);
+
+  GFile * branches;
+  const gchar * errata = g_strconcat(self->url, "errata/errata_branches");
+  branches = g_file_new_for_uri (errata);
+  GError * err = NULL;
+  GFileInputStream *stream = g_file_read (branches, NULL, &err);
+  g_assert_no_error (err);
+
+  JsonParser * parser;
+  JsonNode   * node;
+
+  parser = json_parser_new ();
+  json_parser_load_from_stream (parser, G_INPUT_STREAM (stream), NULL, &err);
+  g_assert_no_error (err);
+  g_assert (stream != NULL);
+
+  node = json_parser_get_root (parser);
+  g_assert (node != NULL);
+  g_assert (JSON_NODE_HOLDS_OBJECT(node));
+
+  JsonObject * obj = json_node_get_object (node);
+
+  JsonArray * array = json_object_get_array_member (obj, "branches");
+
+  gint count = json_array_get_length(array);
+  gint i;
+  for (i = 0; i < count; i++) {
+    g_print ("%s\n", json_array_get_string_element(array, i));
+  }
 }

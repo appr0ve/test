@@ -23,7 +23,8 @@ struct _RdbApi
   void (*print_url)(RdbApi*);
 };
 
-void rdb_api_setup_url(RdbApi* self, GError **error);
+void rdb_api_get_branches(RdbApi* self,
+                          GError **error);
 
 G_END_DECLS
 

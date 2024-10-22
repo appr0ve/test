@@ -98,13 +98,13 @@ gpointer print_version () {
   return NULL;
 }
 gpointer print_branches (RdbApi *api) {
-  gint * status = NULL;
-  if (!status) {
+  GError * error = NULL;
+    rdb_api_get_branches(api, &error);
     return NULL;
-  } else {
+  /*} else {
     g_print ("%s\n", _("Get branches status failed"));
     exit (1);
-  }
+  }*/
 }
 
 gchar * get_property (RdbApi *api, gchar *property) {
