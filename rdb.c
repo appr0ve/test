@@ -26,6 +26,7 @@
 gpointer print_version ();
 gpointer print_branches (RdbApi*);
 gchar * get_property (RdbApi *api, gchar *property);
+gchar * set_property (RdbApi *api, gchar *property, gchar *value);
 
 static gboolean print, control, compare, list = FALSE;
 
@@ -51,8 +52,11 @@ int main (int argc, gchar *argv[]) {
   const gchar * LOCALEDIR = "/usr/share/locale";
   if(g_getenv("LOCALEDIR"))
     LOCALEDIR = g_getenv("LOCALEDIR");
+  const gchar * RDB_API_URL = g_getenv("RDB_API_URL");
+  if(RDB_API_URL)
+    api->url = (gchar*) RDB_API_URL;
 
-  g_print("Currect RDB URL: %s\n", get_property(api, "url"));
+  g_print("%s: %s\n", _("Current RDB URL"), get_property(api, "url"));
 
   /* Initialize gettext routines */
   setlocale (LC_ALL, "");
@@ -108,6 +112,7 @@ gchar * get_property (RdbApi *api, gchar *property) {
   GValue val = G_VALUE_INIT;
   g_value_init (&val, G_TYPE_STRING);
   g_object_get_property(G_OBJECT (api), property, &val);
+  g_assert (G_VALUE_HOLDS_STRING (&val));
   value = g_strdup (g_value_get_string(&val));
   g_value_unset (&val);
   return value;

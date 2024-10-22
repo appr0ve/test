@@ -7,7 +7,7 @@ This program developed only for demonstrative purpose.
 Prerequisites
 
 Before start building install followed dependencies:
-> apt-get install -y gcc-10 make glib2-devel libjson-devel libgio-devel
+> apt-get install -y gcc make glib2-devel libjson-glib-devel libgio-devel
 
 Additional dependencies:
 > apt-get install -y gettext-tools
