@@ -1,27 +1,28 @@
 # User defined
 EXE=rdb
-LIB=librdb.so
+LIB=librdb
 LIB_H=include/rdb
 VER=1
 
 # Trash
-CLN=$(EXE) $(LIB).$(VER)
+CLN=$(EXE) $(LIB).so
 
 # Only Simply Linux have broken symlink for `cc`?
 # x86_64-alt-linux-gcc: No such file or directory 
 CC=gcc-10
 H=`pkg-config --cflags glib-2.0 json-glib-1.0`
-CFLAGS=-Wall -g -O3 -std=gnu17 $(H)
+S=-I$(PWD)/include
+CFLAGS=-Wall -g -O3 -std=gnu17 $(H) $(S)
 LDLIBS=`pkg-config --libs glib-2.0 json-glib-1.0`
 
-all: $(LIB) $(EXE)
+all: $(EXE)
 
 # Targets
-$(EXE): $(O)
-$(LIB): CFLAGS+=-shared -Wl,-soname,$(LIB).$(VER) -fPIC
-$(LIB): $(LIB).$(VER)
-$(LIB).$(VER): $(O)
-	$(CC) $(CFLAGS) -o $@ $(LDLIBS)
+$(EXE): LDLIBS+=-L$(PWD) -l$(EXE)
+$(EXE): $(O) $(LIB).so
+$(LIB).so: CFLAGS+=-shared -Wl,-soname,$(LIB).so -fPIC
+$(LIB).so: $(LIB).c
+	$(CC) $(LIB).c $(CFLAGS) -o $@ $(LDLIBS)
 
 ifndef PREFIX
 PREFIX=/opt/$(EXE)
