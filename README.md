@@ -61,4 +61,4 @@ meson compile rdb-update-po
 
 [^1]: https://rdb.altlinux.org/api/
 [^2]: You can specify that by `-C` option.
-[^2]: Languages defined in `po/LINGUAS`
+[^3]: Languages defined in `po/LINGUAS`
