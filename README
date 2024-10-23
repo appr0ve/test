@@ -1,74 +1,70 @@
-This is README file for rdb client.
-rdb client interact with ALTRepo API[1].
+# ALTRepo API client and shared library
 
-Notice for end users:
-This program developed only for demonstrative purpose.
+Developed for demonstrative purpose.
 
-Prerequisites
+rdb client interact with ALTRepo API[^1].
+
+## Prerequisites
 
 Before start building install followed dependencies:
-> apt-get install -y gcc make glib2-devel libjson-glib-devel libgio-devel
+```
+apt-get install -y gcc meson glib2-devel libjson-glib-devel libgio-devel
+```
 
 Additional dependencies:
-> apt-get install -y gettext-tools
+```
+apt-get install -y gettext-tools
+```
 
 After that get source code for program from github repo:
-> git clone https://github.com/appr0ve/test
-or (you can change wget on somebody else)
-> wget https://github.com/appr0ve/test/archive/refs/heads/main.tar.gz
-> tar xf main.tar.gz
+```
+git clone https://github.com/appr0ve/test
+```
+or (you can change wget on your prefer choice)
+```
+wget https://github.com/appr0ve/test/archive/refs/heads/main.tar.gz
+tar xf main.tar.gz
+```
 
-Building
+## Building
 
-We are assign followed two binary targets (rdb and librdb.so):
-- rdb
-  Client with command line interface without interative mode.
-- librdb.so
-  Shared library for using with rdb client.
+First create build directory by invoke this command:
+```
+meson setup [builddir]
+```
 
-Installation proccess starting by `install` target.
-Read more in `Installation` section below.
+Compile program (within directory)[^2]:
+```
+meson compile
+```
 
-Other targets:
-- clean
-  Remove binary targets.
-- po_*
-  Localization related files.
+## Installation
 
-Installation
 
 By default installation perform to /opt directory[2].
 
 If you prefer another destination change shell enviroment:
 > PREFIX=$MY_PREFER_DIR make install
 
-Usage
+## Usage
 
-This program is multilanguages (Russian and English).
-You can assign prefer language by LC_MESSAGES variable.
+You can change localization of program by LC_MESSAGES variable.
 
-Another available variables for change bevahiour:
-RDB_API_URL assign alternative RDB API url
+By assign RDB_API_URL variable you can change url
   default: https://rdb.altlinux.org/api/
-LOCALEDIR change default directory for local-n files (testing-purpose)
-  default: /usr/share/locale
 
-Localization
+## Localization
 
-First you are need get fresh template:
-> make po_template
+Refresh template:
+```
+meson compile rdb-pot
+```
 
-If you prefer add new translation get follow:
-> lang=$PREFER_LANG make po_init
-Notice: $PREFER_LANG must be ISO 639-1 encoded.
-You can try get your code by this:
-> echo $LANG | cut -b 1,2
+Generate locale file [^3]:
+```
+meson compile rdb-update-po
+```
 
-In another way after refresh template apply new changes:
-> lang=$PREFER_LANG make po_update
-
-If you are job done, upgrade locale file:
-> lang=$PREFER_LANG make po_mo
-
-[1] https://rdb.altlinux.org/api/
-[2] https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch03s13.html
+[^1] https://rdb.altlinux.org/api/
+[^2] You can specify that by `-C` option.
+[^2] Languages defined in `po/LINGUAS`
