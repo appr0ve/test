@@ -61,7 +61,7 @@ int main (int argc, gchar *argv[]) {
   if(RDB_API_URL)
     api->url = (gchar*) RDB_API_URL;
 
-  g_print("%s: %s\n", _("Current RDB URL"), get_property(api, "url"));
+  g_print("%s: %s\n", _("Using following url"), get_property(api, "url"));
 
   /* Initialize gettext routines */
   setlocale (LC_ALL, "");
