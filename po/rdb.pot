@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rdb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-23 09:57+0300\n"
+"POT-Creation-Date: 2024-10-23 10:05+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,6 +23,10 @@ msgstr ""
 
 #: rdb.c:37
 msgid "Control branch"
+msgstr ""
+
+#: rdb.c:37 rdb.c:38
+msgid "BRANCH"
 msgstr ""
 
 #: rdb.c:38

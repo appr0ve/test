@@ -34,8 +34,8 @@ static gboolean print, control, target,
 static GOptionEntry entries[] =
 {
   { "version", 'v', 0, G_OPTION_ARG_NONE, &print, N_("Print version"), NULL },
-  { "control", '1', 0, G_OPTION_ARG_STRING, &control, N_("Control branch"), "BRANCH" },
-  { "target", '2', 0, G_OPTION_ARG_STRING, &target, N_("Target branch"), "BRANCH" },
+  { "control", '1', 0, G_OPTION_ARG_STRING, &control, N_("Control branch"), N_("BRANCH") },
+  { "target", '2', 0, G_OPTION_ARG_STRING, &target, N_("Target branch"), N_("BRANCH") },
   { "list-branches", 'b', 0, G_OPTION_ARG_NONE, &list_branches, N_("List availaible branches"), NULL },
   { "list-arches", 'a', 0, G_OPTION_ARG_NONE, &list_arches, N_("List CPU arch-s available"), NULL },
   { "compare-packages", 'p', 0, G_OPTION_ARG_NONE, &compare_packages, N_("Compare packages beetwen two branches"), NULL },

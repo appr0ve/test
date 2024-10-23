@@ -47,6 +47,11 @@ LC_MESSAGES setup language for program
 
 RDB_API_URL setup url for API (default [^1])
 
+See more on
+```
+rdb -help
+```
+
 ## Localization
 
 Refresh template:
