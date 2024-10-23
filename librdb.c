@@ -133,7 +133,7 @@ rdb_api_get_branches(RdbApi *self, GError **error)
 
   GFile * branches;
   g_assert (self->url != NULL);
-  const gchar * errata = g_strconcat(self->url, "site/all_pkgset_archs?branch=p10");
+  const gchar * errata = g_strconcat(self->url, "errata/errata_branches");
   g_assert (errata != NULL);
   branches = g_file_new_for_uri (errata);
   GError * err = NULL;

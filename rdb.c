@@ -26,7 +26,6 @@
 gpointer print_version ();
 gpointer print_branches (RdbApi*);
 gchar * get_property (RdbApi *api, gchar *property);
-gchar * set_property (RdbApi *api, gchar *property, gchar *value);
 
 static gboolean print, control, target,
                 list_branches, list_arches,
