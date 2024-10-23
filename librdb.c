@@ -205,3 +205,17 @@ rdb_api_get_arches(RdbApi *self, GError **error)
     g_print ("%s\n", json_object_get_string_member (objj[i], "arch"));
   }
 }
+
+
+void
+rdb_api_get_binary (RdbApi *self, GError **error)
+{
+  g_return_if_fail (RDB_IS_API (self));
+  g_return_if_fail (error == NULL || *error == NULL);
+}
+void
+rdb_api_compare_binary (RdbApi *self, GError **error)
+{
+  g_return_if_fail (RDB_IS_API (self));
+  g_return_if_fail (error == NULL || *error == NULL);
+}

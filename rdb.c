@@ -25,19 +25,31 @@ gpointer print_version ();
 gpointer print_branches (RdbApi*);
 gchar * get_property (RdbApi *api, gchar *property);
 
-static gboolean print, control, target,
-                list_branches, list_arches,
-                compare_packages, compare_versions = FALSE;
+static gboolean print = FALSE;
+static gboolean list_arches, list_branches = FALSE;
+static gboolean compare_packages, compare_versions = FALSE;
+static gchar * control = NULL;
+static gchar * target = NULL;
 
-static GOptionEntry entries[] =
+static const GOptionEntry entries[] =
 {
-  { "version", 'v', 0, G_OPTION_ARG_NONE, &print, N_("Print version"), NULL },
+  { "version", 'v', 0,
+    G_OPTION_ARG_NONE, &print,
+    N_("Print version"), NULL },
+  { "list-branches", 'b', 0,
+    G_OPTION_ARG_NONE, &list_branches,
+    N_("List availaible branches"), NULL },
+  { "list-arches", 'a', 0,
+    G_OPTION_ARG_NONE, &list_arches,
+    N_("List CPU arch-s available"), NULL },
+  { "compare-packages", 'p', 0,
+    G_OPTION_ARG_NONE, &compare_packages,
+    N_("Compare packages beetwen two branches"), NULL },
+  { "compare-versions", 'u', 0,
+    G_OPTION_ARG_NONE, &compare_versions,
+    N_("Compare version beetwen two branches"), NULL },
   { "control", '1', 0, G_OPTION_ARG_STRING, &control, N_("Control branch"), N_("BRANCH") },
   { "target", '2', 0, G_OPTION_ARG_STRING, &target, N_("Target branch"), N_("BRANCH") },
-  { "list-branches", 'b', 0, G_OPTION_ARG_NONE, &list_branches, N_("List availaible branches"), NULL },
-  { "list-arches", 'a', 0, G_OPTION_ARG_NONE, &list_arches, N_("List CPU arch-s available"), NULL },
-  { "compare-packages", 'p', 0, G_OPTION_ARG_NONE, &compare_packages, N_("Compare packages beetwen two branches"), NULL },
-  { "compare-versions", 'u', 0, G_OPTION_ARG_NONE, &compare_versions, N_("Compare version beetwen two branches"), NULL },
   { NULL }
 };
 
@@ -71,18 +83,25 @@ int main (int argc, gchar *argv[]) {
     g_print ("%s: %s\n", _("Option parsing failed"), error->message);
     exit (1);
   }
-  if (print) {
+  if (print)
+  {
     print_version();
   }
-
+  if
+  (control && target) {
+    rdb_api_get_binary(api, &error);
+    rdb_api_compare_binary(api, &error);
+  }
   if (list_branches) {
     rdb_api_get_branches(api, &error);
   }
   if (list_arches) {
-    rdb_api_get_arches(api, &error);
+    rdb_api_get_arches(api, &error); 
   }
 
-  return 0;
+  g_option_context_free (context);
+
+  return EXIT_SUCCESS;
 }
 
 /* Print version number
