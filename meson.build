@@ -1,4 +1,8 @@
 project('rdb', 'c')
+version = '1'
+localedir = get_option('localedir')
+add_project_arguments(f'-DVERSION="@version@"', language:'c')
+add_project_arguments(f'-DLOCALEDIR="@localedir@"', language:'c')
 subdir('po')
 glib = dependency('glib-2.0')
 json = dependency('json-glib-1.0')

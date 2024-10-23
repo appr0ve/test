@@ -30,7 +30,7 @@ tar xf main.tar.gz
 
 First create build directory by invoke this command:
 ```
-meson setup [builddir]
+meson setup $PREFER_BUILD_DIR
 ```
 
 Compile program (within directory)[^2]:
@@ -62,6 +62,11 @@ meson compile rdb-pot
 Generate locale file [^3]:
 ```
 meson compile rdb-update-po
+```
+
+Assign locale directory:
+```
+meson configure $PREFER_BUILD_DIR --localedir=$PREFER_BUILD_DIR/po
 ```
 
 [^1]: https://rdb.altlinux.org/api/

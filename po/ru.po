@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rdb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-23 10:05+0300\n"
+"POT-Creation-Date: 2024-10-23 10:15+0300\n"
 "PO-Revision-Date: 2024-10-23 08:27+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -18,42 +18,46 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: rdb.c:36
+#: rdb.c:35
 msgid "Print version"
 msgstr "Вывести версию"
 
-#: rdb.c:37
+#: rdb.c:36
 msgid "Control branch"
 msgstr "Контрольная ветка"
 
-#: rdb.c:37 rdb.c:38
+#: rdb.c:36 rdb.c:37
 msgid "BRANCH"
 msgstr "ВЕТКА"
 
-#: rdb.c:38
+#: rdb.c:37
 msgid "Target branch"
 msgstr "Целевая ветка"
 
-#: rdb.c:39
+#: rdb.c:38
 msgid "List availaible branches"
 msgstr "Список доступных веток"
 
-#: rdb.c:40
+#: rdb.c:39
 msgid "List CPU arch-s available"
 msgstr "Список доступных архитектур ЦП"
 
-#: rdb.c:41
+#: rdb.c:40
 msgid "Compare packages beetwen two branches"
 msgstr "Сравнить пакет между двумя ветками"
 
-#: rdb.c:42
+#: rdb.c:41
 msgid "Compare version beetwen two branches"
 msgstr "Сравнить версии между двумя ветками"
 
-#: rdb.c:63
+#: rdb.c:62
 msgid "Using following url"
 msgstr "Используется следующая ссылка"
 
-#: rdb.c:79
+#: rdb.c:71
+msgid "- Show how to use rdb client"
+msgstr "- показывает, как использовать клиент rdb"
+
+#: rdb.c:78
 msgid "Option parsing failed"
 msgstr "Ошибка разбора аргумента"

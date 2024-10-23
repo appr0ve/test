@@ -1,7 +1,6 @@
 /* SPDX-License: Apache-2.0
  * SPDX-FileCopyrightText: 2024 appr0ve
  */
-#define GETTEXT_PACKAGE "rdb"
 
 /* Internalization */
 #include <glib/gi18n.h>
@@ -22,7 +21,6 @@
  * See more in `print_version`.
  * Notice: GOptionContext generate help option itself.
  */
-#define VERSION 1
 gpointer print_version ();
 gpointer print_branches (RdbApi*);
 gchar * get_property (RdbApi *api, gchar *property);
@@ -50,12 +48,6 @@ int main (int argc, gchar *argv[]) {
 
   RdbApi *api = g_object_new (RDB_TYPE_API, NULL);
 
-  /* Assign LOCALEDIR for gettext
-   * (testing-purpose)
-   */
-  const gchar * LOCALEDIR = "/usr/share/locale";
-  if(g_getenv("LOCALEDIR"))
-    LOCALEDIR = g_getenv("LOCALEDIR");
   const gchar * RDB_API_URL = g_getenv("RDB_API_URL");
   if(RDB_API_URL)
     api->url = (gchar*) RDB_API_URL;
@@ -69,7 +61,7 @@ int main (int argc, gchar *argv[]) {
   textdomain (GETTEXT_PACKAGE);
 
   /* Register new context */
-  context = g_option_context_new ("Interact with RDB API");
+  context = g_option_context_new N_("- Show how to use rdb client");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_set_translation_domain (context, GETTEXT_PACKAGE);
 
@@ -97,7 +89,7 @@ int main (int argc, gchar *argv[]) {
  * options: -v --version
  */
 gpointer print_version () {
-  g_print ("%s %d\n", GETTEXT_PACKAGE, VERSION);
+  g_print ("%s %s\n", GETTEXT_PACKAGE, VERSION);
   return NULL;
 }
 

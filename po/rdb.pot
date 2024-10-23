@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rdb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-23 10:05+0300\n"
+"POT-Creation-Date: 2024-10-23 10:15+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,42 +17,46 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: rdb.c:36
+#: rdb.c:35
 msgid "Print version"
 msgstr ""
 
-#: rdb.c:37
+#: rdb.c:36
 msgid "Control branch"
 msgstr ""
 
-#: rdb.c:37 rdb.c:38
+#: rdb.c:36 rdb.c:37
 msgid "BRANCH"
 msgstr ""
 
-#: rdb.c:38
+#: rdb.c:37
 msgid "Target branch"
 msgstr ""
 
-#: rdb.c:39
+#: rdb.c:38
 msgid "List availaible branches"
 msgstr ""
 
-#: rdb.c:40
+#: rdb.c:39
 msgid "List CPU arch-s available"
 msgstr ""
 
-#: rdb.c:41
+#: rdb.c:40
 msgid "Compare packages beetwen two branches"
 msgstr ""
 
-#: rdb.c:42
+#: rdb.c:41
 msgid "Compare version beetwen two branches"
 msgstr ""
 
-#: rdb.c:63
+#: rdb.c:62
 msgid "Using following url"
 msgstr ""
 
-#: rdb.c:79
+#: rdb.c:71
+msgid "- Show how to use rdb client"
+msgstr ""
+
+#: rdb.c:78
 msgid "Option parsing failed"
 msgstr ""
