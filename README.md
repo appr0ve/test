@@ -41,17 +41,11 @@ meson compile
 ## Installation
 
 
-By default installation perform to /opt directory[2].
-
-If you prefer another destination change shell enviroment:
-> PREFIX=$MY_PREFER_DIR make install
-
 ## Usage
 
-You can change localization of program by LC_MESSAGES variable.
+LC_MESSAGES setup language for program
 
-By assign RDB_API_URL variable you can change url
-  default: https://rdb.altlinux.org/api/
+RDB_API_URL setup url for API (default [^1])
 
 ## Localization
 
@@ -65,6 +59,6 @@ Generate locale file [^3]:
 meson compile rdb-update-po
 ```
 
-[^1] https://rdb.altlinux.org/api/
-[^2] You can specify that by `-C` option.
-[^2] Languages defined in `po/LINGUAS`
+[^1]: https://rdb.altlinux.org/api/
+[^2]: You can specify that by `-C` option.
+[^2]: Languages defined in `po/LINGUAS`
