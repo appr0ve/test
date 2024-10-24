@@ -222,7 +222,14 @@ rdb_api_cache_check
 
   gchar * filename;
   GFile * tgt_file;
-  filename = g_strconcat(g_getenv("HOME"), "/.cache/", control, NULL);
+  GError * err = NULL;
+  filename = g_strconcat (g_getenv("HOME"), "/.cache/", control, NULL);
+  tgt_file = g_file_new_for_path (filename);
+  g_assert_no_error (err);
+  if (g_file_query_exists (tgt_file, NULL))
+  {
+  } else {
+  }
 }
 void
 rdb_api_compare_binary
@@ -238,23 +245,22 @@ rdb_api_get_binary
   g_return_if_fail (RDB_IS_API (self));
   g_return_if_fail (error == NULL || *error == NULL);
   GFile * binary_data;
-  GFile * output_data;
+  /*GFile * output_data;*/
   gchar * path = g_strconcat(self->url, "export/branch_binary_packages/", control, NULL);
   binary_data = g_file_new_for_uri (path);
   GError * err = NULL;
   control = g_strconcat(g_getenv("HOME"), "/.cache/", control, NULL);
-  g_print ("%d\n",g_file_hash (binary_data));
-  output_data = g_file_new_for_path (control);
+  /*output_data = g_file_new_for_path (control);*/
   g_assert_no_error (err);
-  g_file_copy_async (binary_data,
+  /*g_file_copy_async (binary_data,
                      output_data,
                      G_FILE_COPY_OVERWRITE,
                      G_PRIORITY_HIGH,
                      NULL,
                      NULL,
                      NULL,
-                     &rdb_api_binary_accepted,
-                     NULL);
+                     rdb_api_binary_accepted,
+                     NULL);*/
   g_assert_no_error (err);
   g_object_unref(binary_data);
 }
