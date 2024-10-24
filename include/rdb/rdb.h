@@ -20,6 +20,8 @@ struct _RdbApi
   gchar *url;
   gchar *method_binary;
   gchar *method_branch;
+  gboolean control_status;
+  gboolean target_status;
   void (*print_url)(RdbApi*);
 };
 

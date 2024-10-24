@@ -123,6 +123,8 @@ rdb_api_class_init (RdbApiClass *klass)
 static void
 rdb_api_init (RdbApi *self)
 {
+  self->control_status = FALSE;
+  self->target_status = FALSE;
 }
 
 void
@@ -220,16 +222,18 @@ rdb_api_cache_check
   g_return_if_fail (RDB_IS_API (self));
   g_return_if_fail (error == NULL || *error == NULL);
 
-  gchar * filename;
+  GFile * ctl_file;
   GFile * tgt_file;
-  GError * err = NULL;
-  filename = g_strconcat (g_getenv("HOME"), "/.cache/", control, NULL);
-  tgt_file = g_file_new_for_path (filename);
-  g_assert_no_error (err);
+
+  control = g_strconcat (g_getenv("HOME"), "/.cache/", control, NULL);
+  ctl_file = g_file_new_for_path (control);
+  target = g_strconcat (g_getenv("HOME"), "/.cache/", target, NULL);
+  tgt_file = g_file_new_for_path (target);
+
+  if (g_file_query_exists (ctl_file, NULL))
+    self->control_status = TRUE;
   if (g_file_query_exists (tgt_file, NULL))
-  {
-  } else {
-  }
+    self->target_status = TRUE;
 }
 void
 rdb_api_compare_binary

@@ -90,6 +90,18 @@ int main (int argc, gchar *argv[]) {
     if (g_strcmp0(control, target)) {
       g_print("%s: %s\n", _("Using following url"), get_property(api, "url"));
       rdb_api_cache_check (api, &error, control, target);
+      if (api->control_status) {
+	g_print ("%s %s %s",
+	       _("Cache for branch"),
+	         control,
+	       _("already exist, redownload?\n"));
+      }
+      if (api->target_status) {
+        g_print ("%s %s %s",
+	       _("Cache for branch"),
+	         target,
+	       _("already exist, redownload?\n"));
+      }
       rdb_api_get_binary(api, &error, control, target);
       rdb_api_compare_binary(api, &error, control, target);
     } else {

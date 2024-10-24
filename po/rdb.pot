@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rdb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-23 10:15+0300\n"
+"POT-Creation-Date: 2024-10-24 21:21+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,46 +17,58 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: rdb.c:35
+#: rdb.c:38
 msgid "Print version"
 msgstr ""
 
-#: rdb.c:36
-msgid "Control branch"
-msgstr ""
-
-#: rdb.c:36 rdb.c:37
-msgid "BRANCH"
-msgstr ""
-
-#: rdb.c:37
-msgid "Target branch"
-msgstr ""
-
-#: rdb.c:38
+#: rdb.c:41
 msgid "List availaible branches"
 msgstr ""
 
-#: rdb.c:39
+#: rdb.c:44
 msgid "List CPU arch-s available"
 msgstr ""
 
-#: rdb.c:40
+#: rdb.c:47
 msgid "Compare packages beetwen two branches"
 msgstr ""
 
-#: rdb.c:41
+#: rdb.c:50
 msgid "Compare version beetwen two branches"
 msgstr ""
 
-#: rdb.c:62
-msgid "Using following url"
+#: rdb.c:51
+msgid "Control branch"
 msgstr ""
 
-#: rdb.c:71
+#: rdb.c:51 rdb.c:52
+msgid "BRANCH"
+msgstr ""
+
+#: rdb.c:52
+msgid "Target branch"
+msgstr ""
+
+#: rdb.c:74
 msgid "- Show how to use rdb client"
 msgstr ""
 
-#: rdb.c:78
+#: rdb.c:81
 msgid "Option parsing failed"
+msgstr ""
+
+#: rdb.c:91
+msgid "Using following url"
+msgstr ""
+
+#: rdb.c:95 rdb.c:101
+msgid "Cache for branch"
+msgstr ""
+
+#: rdb.c:97 rdb.c:103
+msgid "already exist, redownload?\n"
+msgstr ""
+
+#: rdb.c:108
+msgid "Branches must be differ!\n"
 msgstr ""
