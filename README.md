@@ -13,7 +13,7 @@ apt-get install -y gcc meson glib2-devel libjson-glib-devel libgio-devel
 
 Additional dependencies:
 ```
-apt-get install -y gettext-tools
+apt-get install -y gettext-tools gtk-doc
 ```
 
 After that get source code for program from github repo:

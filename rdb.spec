@@ -4,23 +4,27 @@ Release: alt1
 
 Summary: rdb api client
 Summary(ru_RU.UTF-8): rdb api клиент
-License: apache-2.0
+License: Apache-2.0
 Group: Development/Other
 
 Url: https://github.com/appr0ve/test
 VCS: https://github.com/appr0ve/test.git
 Source: %name-%version.tar
+Packager: Joe Hacker <joe@altlinux.org>
 
 Requires: glib2 libgio libjson-glib
 
-BuildRequires(pre): git
-BuildRequires: gcc meson glib2-devel libjson-glib-devel libgio-devel
+BuildRequires(pre): rpm-macros-meson
+BuildRequires: meson
+BuildRequires: glib2-devel
+BuildRequires: libjson-glib-devel
+BuildRequires: libgio-devel
 
 %description
 none
 
 %prep
-%setup
+%setup -n %name-%version
 
 %build
 %meson
@@ -33,13 +37,11 @@ none
 %meson_test
 
 %files
-%{_libdir}/lib%{name}.so.*
-%doc README
-
-%files devel
-%{_libdir}/lib%{name}.so
-%{_includedir}/%{name}.h
+%_bindir/%name
+%_libdir/lib%{name}.so
+%_datadir/locale/*/LC_MESSAGES/%name.mo
+%doc README.md
 
 %changelog
-* Wed Oct 23 2024 appr0ve <185701845+appr0ve@users.noreply.github.com> 1-alt1
+* Thu Oct 24 2024 Joe Hacker <joe@altlinux.org> 1-alt1
 - Initial build for ALT Linux Sisyphus.

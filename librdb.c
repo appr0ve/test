@@ -133,7 +133,7 @@ rdb_api_get_branches(RdbApi *self, GError **error)
 
   GFile * branches;
   g_assert (self->url != NULL);
-  const gchar * errata = g_strconcat(self->url, "errata/errata_branches");
+  gchar * errata = g_strconcat((gchar*)self->url, "errata/errata_branches", NULL);
   g_assert (errata != NULL);
   branches = g_file_new_for_uri (errata);
   GError * err = NULL;
@@ -170,7 +170,7 @@ rdb_api_get_arches(RdbApi *self, GError **error)
   g_return_if_fail (error == NULL || *error == NULL);
 
   GFile * arches;
-  const gchar * errata = g_strconcat(self->url, "site/all_pkgset_archs?branch=p10");
+  const gchar * errata = g_strconcat(self->url, "site/all_pkgset_archs?branch=p10", NULL);
   arches = g_file_new_for_uri (errata);
   GError * err = NULL;
   GFileInputStream *stream = g_file_read (arches, NULL, &err);
@@ -197,7 +197,6 @@ rdb_api_get_arches(RdbApi *self, GError **error)
   gint i;
   JsonNode * nod[count];
   JsonObject * objj[count];
-  JsonArray * arr[count];
   for (i = 0; i < count; i++) {
     nod[i] = json_array_get_element (array, i);
     g_assert (JSON_NODE_HOLDS_OBJECT (nod[i]));
@@ -206,16 +205,56 @@ rdb_api_get_arches(RdbApi *self, GError **error)
   }
 }
 
+GAsyncReadyCallback
+rdb_api_binary_accepted
+(GObject *source_object, GAsyncResult *res, gpointer user_data)
+{
+  return 0;
+}
+
 
 void
-rdb_api_get_binary (RdbApi *self, GError **error)
+rdb_api_cache_check
+(RdbApi *self, GError **error, gchar *control, gchar *target)
+{
+  g_return_if_fail (RDB_IS_API (self));
+  g_return_if_fail (error == NULL || *error == NULL);
+
+  gchar * filename;
+  GFile * tgt_file;
+  filename = g_strconcat(g_getenv("HOME"), "/.cache/", control, NULL);
+}
+void
+rdb_api_compare_binary
+(RdbApi *self, GError **error, gchar *control, gchar *target)
 {
   g_return_if_fail (RDB_IS_API (self));
   g_return_if_fail (error == NULL || *error == NULL);
 }
 void
-rdb_api_compare_binary (RdbApi *self, GError **error)
+rdb_api_get_binary
+(RdbApi *self, GError **error, gchar *control, gchar *target)
 {
   g_return_if_fail (RDB_IS_API (self));
   g_return_if_fail (error == NULL || *error == NULL);
+  GFile * binary_data;
+  GFile * output_data;
+  gchar * path = g_strconcat(self->url, "export/branch_binary_packages/", control, NULL);
+  binary_data = g_file_new_for_uri (path);
+  GError * err = NULL;
+  control = g_strconcat(g_getenv("HOME"), "/.cache/", control, NULL);
+  g_print ("%d\n",g_file_hash (binary_data));
+  output_data = g_file_new_for_path (control);
+  g_assert_no_error (err);
+  g_file_copy_async (binary_data,
+                     output_data,
+                     G_FILE_COPY_OVERWRITE,
+                     G_PRIORITY_HIGH,
+                     NULL,
+                     NULL,
+                     NULL,
+                     &rdb_api_binary_accepted,
+                     NULL);
+  g_assert_no_error (err);
+  g_object_unref(binary_data);
 }

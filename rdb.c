@@ -64,8 +64,6 @@ int main (int argc, gchar *argv[]) {
   if(RDB_API_URL)
     api->url = (gchar*) RDB_API_URL;
 
-  g_print("%s: %s\n", _("Using following url"), get_property(api, "url"));
-
   /* Initialize gettext routines */
   setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -89,14 +87,21 @@ int main (int argc, gchar *argv[]) {
   }
   if
   (control && target) {
-    rdb_api_get_binary(api, &error);
-    rdb_api_compare_binary(api, &error);
+    if (g_strcmp0(control, target)) {
+      g_print("%s: %s\n", _("Using following url"), get_property(api, "url"));
+      rdb_api_cache_check (api, &error, control, target);
+      rdb_api_get_binary(api, &error, control, target);
+      rdb_api_compare_binary(api, &error, control, target);
+    } else {
+      g_print (_("Branches must be differ!\n"));
+      return EXIT_FAILURE;
+    }
   }
   if (list_branches) {
     rdb_api_get_branches(api, &error);
   }
   if (list_arches) {
-    rdb_api_get_arches(api, &error); 
+    rdb_api_get_arches(api, &error);
   }
 
   g_option_context_free (context);

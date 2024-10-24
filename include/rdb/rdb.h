@@ -27,10 +27,18 @@ void rdb_api_get_branches(RdbApi* self,
                           GError **error);
 void rdb_api_get_arches  (RdbApi* self,
                           GError **error);
+void rdb_api_cache_check (RdbApi* self,
+                          GError **error,
+                          gchar *control,
+                          gchar *target);
 void rdb_api_get_binary  (RdbApi* self,
-                          GError **error);
+                          GError **error,
+                          gchar *control,
+                          gchar *target);
 void rdb_api_compare_binary  (RdbApi* self,
-                          GError **error);
+                          GError **error,
+                          gchar *control,
+                          gchar *target);
 
 G_END_DECLS
 
