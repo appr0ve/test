@@ -93,6 +93,12 @@ int main (int argc, gchar *argv[]) {
     g_print ("%s: %s\n", _("Option parsing failed"), error->message);
     exit (1);
   }
+
+  if (argc < 2) {
+    g_print ("%s\n", g_option_context_get_help (context, FALSE, NULL));
+    return EXIT_FAILURE;
+  }
+
   if (print)
   {
     print_version();

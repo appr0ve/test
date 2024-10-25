@@ -137,7 +137,8 @@ rdb_api_get_branches(RdbApi *self, GError **error)
 
   GFile * branches;
   g_assert (self->url != NULL);
-  gchar * errata = g_strconcat((gchar*)self->url, "errata/errata_branches", NULL);
+  gchar * errata;
+  errata = g_build_path ("/", (gchar*)self->url, "errata/errata_branches", NULL);
   g_assert (errata != NULL);
   branches = g_file_new_for_uri (errata);
   GError * err = NULL;
@@ -174,7 +175,8 @@ rdb_api_get_arches(RdbApi *self, GError **error)
   g_return_if_fail (error == NULL || *error == NULL);
 
   GFile * arches;
-  const gchar * errata = g_strconcat(self->url, "site/all_pkgset_archs?branch=p10", NULL);
+  const gchar * errata;
+  errata = g_build_path ("/", self->url, "site/all_pkgset_archs?branch=p10", NULL);
   arches = g_file_new_for_uri (errata);
   GError * err = NULL;
   GFileInputStream *stream = g_file_read (arches, NULL, &err);
@@ -227,9 +229,9 @@ rdb_api_cache_check
   GFile * ctl_file;
   GFile * tgt_file;
 
-  control = g_strconcat (g_getenv("HOME"), "/.cache/", control, NULL);
+  control = g_build_path ("/", g_getenv("HOME"), ".cache", control, NULL);
   ctl_file = g_file_new_for_path (control);
-  target = g_strconcat (g_getenv("HOME"), "/.cache/", target, NULL);
+  target = g_build_path ("/", g_getenv("HOME"), ".cache", target, NULL);
   tgt_file = g_file_new_for_path (target);
 
   if (g_file_query_exists (ctl_file, NULL))
@@ -250,10 +252,10 @@ void rdb_api_get_binary(RdbApi *self, gchar *branch)
   GFile * binary_data;
   GFile * output_data;
   gchar * path;
-  path = g_strconcat(self->url, "export/branch_binary_packages/", branch, NULL);
+  path = g_build_path ("/", self->url, "export/branch_binary_packages", branch, NULL);
   binary_data = g_file_new_for_uri (path);
   GError * err = NULL;
-  branch = g_strconcat(g_getenv("HOME"), "/.cache/", branch, NULL);
+  branch = g_build_path ("/", g_getenv("HOME"), "/.cache/", branch, NULL);
   output_data = g_file_new_for_path (branch);
   g_assert_no_error (err);
   g_file_copy_async (binary_data,
@@ -277,9 +279,9 @@ rdb_api_get_binaries
   g_return_if_fail (error == NULL || *error == NULL);
 
   if (!(self->control_status) || self->control_overwrite) {
-    rdb_api_get_binary(self, control);
+    rdb_api_get_binary (self, control);
   }
   if (!(self->target_status) || self->target_overwrite) {
-    rdb_api_get_binary(self, control);
+    rdb_api_get_binary (self, control);
   }
 }
