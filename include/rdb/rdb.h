@@ -24,6 +24,7 @@ struct _RdbApi
   gboolean target_status;
   gboolean control_overwrite;
   gboolean target_overwrite;
+  goffset download_counter;
   void (*print_url)(RdbApi*);
 };
 

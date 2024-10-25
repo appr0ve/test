@@ -94,11 +94,6 @@ int main (int argc, gchar *argv[]) {
     exit (1);
   }
 
-  if (argc < 2) {
-    g_print ("%s\n", g_option_context_get_help (context, FALSE, NULL));
-    return EXIT_FAILURE;
-  }
-
   if (print)
   {
     print_version();

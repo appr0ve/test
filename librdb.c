@@ -211,6 +211,7 @@ rdb_api_get_arches(RdbApi *self, GError **error)
   }
 }
 
+
 GAsyncReadyCallback
 rdb_api_binary_accepted
 (GObject *source_object, GAsyncResult *res, gpointer user_data)
@@ -247,6 +248,19 @@ rdb_api_compare_binary
   g_return_if_fail (error == NULL || *error == NULL);
 }
 
+goffset progress_counter;
+
+GFileProgressCallback progress_callback (
+  goffset current_num_bytes,
+  goffset total_num_bytes,
+  gpointer user_data)
+{
+  progress_counter = current_num_bytes / 1024;
+  total_num_bytes /= 1024;
+  g_print ("%s: %ld / %ld\r", (gchar*) user_data, progress_counter, total_num_bytes);
+  return 0;
+}
+
 void rdb_api_get_binary(RdbApi *self, gchar *branch)
 {
   GFile * binary_data;
@@ -255,18 +269,14 @@ void rdb_api_get_binary(RdbApi *self, gchar *branch)
   path = g_build_path ("/", self->url, "export/branch_binary_packages", branch, NULL);
   binary_data = g_file_new_for_uri (path);
   GError * err = NULL;
-  branch = g_build_path ("/", g_getenv("HOME"), "/.cache/", branch, NULL);
-  output_data = g_file_new_for_path (branch);
+  gchar * branch_path;
+  branch_path = g_build_path ("/", g_getenv("HOME"), "/.cache/", branch, NULL);
+  output_data = g_file_new_for_path (branch_path);
   g_assert_no_error (err);
-  g_file_copy_async (binary_data,
-                     output_data,
-                     G_FILE_COPY_OVERWRITE,
-                     G_PRIORITY_HIGH,
-                     NULL,
-                     NULL,
-                     NULL,
-                     rdb_api_binary_accepted,
-                     NULL);
+
+  progress_counter = (goffset) &self->download_counter;
+  g_file_copy (binary_data, output_data, G_FILE_COPY_OVERWRITE,
+		  NULL, (GFileProgressCallback) progress_callback, branch, &err);
   g_assert_no_error (err);
   g_object_unref(binary_data);
 }
