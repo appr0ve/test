@@ -22,6 +22,8 @@ struct _RdbApi
   gchar *method_branch;
   gboolean control_status;
   gboolean target_status;
+  gboolean control_overwrite;
+  gboolean target_overwrite;
   void (*print_url)(RdbApi*);
 };
 

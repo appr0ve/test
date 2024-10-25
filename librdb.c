@@ -125,6 +125,8 @@ rdb_api_init (RdbApi *self)
 {
   self->control_status = FALSE;
   self->target_status = FALSE;
+  self->control_overwrite = FALSE;
+  self->target_overwrite = FALSE;
 }
 
 void
@@ -242,12 +244,14 @@ rdb_api_compare_binary
   g_return_if_fail (RDB_IS_API (self));
   g_return_if_fail (error == NULL || *error == NULL);
 }
+
 void
 rdb_api_get_binary
 (RdbApi *self, GError **error, gchar *control, gchar *target)
 {
   g_return_if_fail (RDB_IS_API (self));
   g_return_if_fail (error == NULL || *error == NULL);
+
   GFile * binary_data;
   /*GFile * output_data;*/
   gchar * path = g_strconcat(self->url, "export/branch_binary_packages/", control, NULL);

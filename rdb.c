@@ -9,6 +9,14 @@
 /* JSON parse */
 #include <json-glib/json-glib.h>
 
+/* Not found solution for GLib
+ * Source code contain somethink like stdin
+ * but compiled test "not working" like getchar.
+ * src: glib/gio/tests/basic-application.c +182
+ * (from glib2-2.82.2-alt1-81940df)
+ * */
+#include <stdio.h>
+
 /* RDB API shared library */
 #include <rdb/rdb.h>
 
@@ -48,8 +56,12 @@ static const GOptionEntry entries[] =
   { "compare-versions", 'u', 0,
     G_OPTION_ARG_NONE, &compare_versions,
     N_("Compare version beetwen two branches"), NULL },
-  { "control", '1', 0, G_OPTION_ARG_STRING, &control, N_("Control branch"), N_("BRANCH") },
-  { "target", '2', 0, G_OPTION_ARG_STRING, &target, N_("Target branch"), N_("BRANCH") },
+  { "control", '1', 0, 
+    G_OPTION_ARG_STRING, &control,
+    N_("Control branch"), N_("BRANCH") },
+  { "target", '2', 0,
+    G_OPTION_ARG_STRING, &target,
+    N_("Target branch"), N_("BRANCH") },
   { NULL }
 };
 
@@ -95,13 +107,36 @@ int main (int argc, gchar *argv[]) {
 	       _("Cache for branch"),
 	         control,
 	       _("already exist, redownload?\n"));
+	char decision;
+        g_print ("[y/n] ");
+	while (!(decision == 'y' ||
+		 decision == 'n' ||
+		 decision == 'Y' ||
+		 decision == 'N' )) {
+	  scanf ("%c", &decision);
+          if (decision == 'y' || decision == 'Y') {
+            api->control_overwrite = TRUE;
+          }
+	}
       }
       if (api->target_status) {
         g_print ("%s %s %s",
 	       _("Cache for branch"),
 	         target,
 	       _("already exist, redownload?\n"));
+        g_print ("[y/n] ");
+	char decision = '0';
+	while (!(decision == 'y' ||
+		 decision == 'n' ||
+		 decision == 'Y' ||
+		 decision == 'N' )) {
+	  scanf ("%c", &decision);
+          if (decision == 'y' || decision == 'Y') {
+            api->target_overwrite = TRUE;
+          }
+	}
       }
+
       rdb_api_get_binary(api, &error, control, target);
       rdb_api_compare_binary(api, &error, control, target);
     } else {
