@@ -137,7 +137,7 @@ int main (int argc, gchar *argv[]) {
 	}
       }
 
-      rdb_api_get_binary(api, &error, control, target);
+      rdb_api_get_binaries (api, &error, control, target);
       rdb_api_compare_binary(api, &error, control, target);
     } else {
       g_print (_("Branches must be differ!\n"));

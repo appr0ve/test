@@ -245,22 +245,18 @@ rdb_api_compare_binary
   g_return_if_fail (error == NULL || *error == NULL);
 }
 
-void
-rdb_api_get_binary
-(RdbApi *self, GError **error, gchar *control, gchar *target)
+void rdb_api_get_binary(RdbApi *self, gchar *branch)
 {
-  g_return_if_fail (RDB_IS_API (self));
-  g_return_if_fail (error == NULL || *error == NULL);
-
   GFile * binary_data;
-  /*GFile * output_data;*/
-  gchar * path = g_strconcat(self->url, "export/branch_binary_packages/", control, NULL);
+  GFile * output_data;
+  gchar * path;
+  path = g_strconcat(self->url, "export/branch_binary_packages/", branch, NULL);
   binary_data = g_file_new_for_uri (path);
   GError * err = NULL;
-  control = g_strconcat(g_getenv("HOME"), "/.cache/", control, NULL);
-  /*output_data = g_file_new_for_path (control);*/
+  branch = g_strconcat(g_getenv("HOME"), "/.cache/", branch, NULL);
+  output_data = g_file_new_for_path (branch);
   g_assert_no_error (err);
-  /*g_file_copy_async (binary_data,
+  g_file_copy_async (binary_data,
                      output_data,
                      G_FILE_COPY_OVERWRITE,
                      G_PRIORITY_HIGH,
@@ -268,7 +264,22 @@ rdb_api_get_binary
                      NULL,
                      NULL,
                      rdb_api_binary_accepted,
-                     NULL);*/
+                     NULL);
   g_assert_no_error (err);
   g_object_unref(binary_data);
+}
+
+void
+rdb_api_get_binaries
+(RdbApi *self, GError **error, gchar *control, gchar *target)
+{
+  g_return_if_fail (RDB_IS_API (self));
+  g_return_if_fail (error == NULL || *error == NULL);
+
+  if (!(self->control_status) || self->control_overwrite) {
+    rdb_api_get_binary(self, control);
+  }
+  if (!(self->target_status) || self->target_overwrite) {
+    rdb_api_get_binary(self, control);
+  }
 }
