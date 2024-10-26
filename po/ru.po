@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rdb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-26 08:33+0300\n"
+"POT-Creation-Date: 2024-10-26 08:40+0300\n"
 "PO-Revision-Date: 2024-10-23 08:27+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -62,22 +62,26 @@ msgstr "- показывает, как использовать клиент rdb
 msgid "Option parsing failed"
 msgstr "Ошибка разбора аргумента"
 
-#: rdb.c:111
+#: rdb.c:115
 msgid "Using following url"
 msgstr "Используется следующая ссылка"
 
-#: rdb.c:115 rdb.c:132
+#: rdb.c:119 rdb.c:136
 msgid "Cache for branch"
 msgstr "Данные для ветки"
 
-#: rdb.c:117 rdb.c:134
+#: rdb.c:121 rdb.c:138
 msgid "already exist, redownload?\n"
 msgstr "уже существуют, перезагрузить?\n"
 
-#: rdb.c:148
+#: rdb.c:152
 msgid "Starting download binaries data...\n"
 msgstr "Начинается загрузка бинарных данных...\n"
 
-#: rdb.c:152
+#: rdb.c:156
+msgid "Select what to do with branches!\n"
+msgstr "Выберите что делать с ветками!\n"
+
+#: rdb.c:158
 msgid "Branches must be differ!\n"
 msgstr "Ветки должны быть различны!\n"

@@ -108,6 +108,10 @@ int main (int argc, gchar *argv[]) {
   if
   (control && target) {
     if (g_strcmp0(control, target)) {
+    if (compare_packages ||
+	compare_packages_reverse ||
+	compare_versions)
+    {
       g_print("%s: %s\n", _("Using following url"), get_property(api, "url"));
       rdb_api_cache_check (api, &error, control, target);
       if (api->control_status) {
@@ -148,6 +152,8 @@ int main (int argc, gchar *argv[]) {
       g_print (_("Starting download binaries data...\n"));
       rdb_api_get_binaries (api, &error, control, target);
       rdb_api_compare_binary (api, &error, control, target);
+    } else
+      g_print (_("Select what to do with branches!\n"));
     } else {
       g_print (_("Branches must be differ!\n"));
       return EXIT_FAILURE;

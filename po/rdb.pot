@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rdb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-26 08:33+0300\n"
+"POT-Creation-Date: 2024-10-26 08:40+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,22 +61,26 @@ msgstr ""
 msgid "Option parsing failed"
 msgstr ""
 
-#: rdb.c:111
+#: rdb.c:115
 msgid "Using following url"
 msgstr ""
 
-#: rdb.c:115 rdb.c:132
+#: rdb.c:119 rdb.c:136
 msgid "Cache for branch"
 msgstr ""
 
-#: rdb.c:117 rdb.c:134
+#: rdb.c:121 rdb.c:138
 msgid "already exist, redownload?\n"
 msgstr ""
 
-#: rdb.c:148
+#: rdb.c:152
 msgid "Starting download binaries data...\n"
 msgstr ""
 
-#: rdb.c:152
+#: rdb.c:156
+msgid "Select what to do with branches!\n"
+msgstr ""
+
+#: rdb.c:158
 msgid "Branches must be differ!\n"
 msgstr ""
