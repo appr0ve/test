@@ -209,15 +209,6 @@ rdb_api_get_arches (RdbApi * self, GError ** error)
     }
 }
 
-
-GAsyncReadyCallback
-  rdb_api_binary_accepted
-  (GObject * source_object, GAsyncResult * res, gpointer user_data)
-{
-  return 0;
-}
-
-
 void
   rdb_api_cache_check
   (RdbApi * self, GError ** error, gchar * control, gchar * target)
@@ -302,6 +293,6 @@ void
     }
   if (!(self->target_status) || self->target_overwrite)
     {
-      rdb_api_get_binary (self, control);
+      rdb_api_get_binary (self, target);
     }
 }
