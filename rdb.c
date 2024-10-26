@@ -35,7 +35,9 @@ gchar * get_property (RdbApi *api, gchar *property);
 
 static gboolean print = FALSE;
 static gboolean list_arches, list_branches = FALSE;
-static gboolean compare_packages, compare_versions = FALSE;
+static gboolean compare_packages,
+		compare_packages_reverse,
+		compare_versions = FALSE;
 static gchar * control = NULL;
 static gchar * target = NULL;
 
@@ -52,10 +54,15 @@ static const GOptionEntry entries[] =
     N_("List CPU arch-s available"), NULL },
   { "compare-packages", 'p', 0,
     G_OPTION_ARG_NONE, &compare_packages,
-    N_("Compare packages beetwen two branches"), NULL },
+    N_("Show difference existence between packages within two branches"),
+    NULL },
+  { "compare-packages-reverse", 'r', 0,
+    G_OPTION_ARG_NONE, &compare_packages_reverse,
+    N_("Reverse-order mode"), NULL },
   { "compare-versions", 'u', 0,
     G_OPTION_ARG_NONE, &compare_versions,
-    N_("Compare version beetwen two branches"), NULL },
+    N_("Show difference version between packages within two branches"),
+    NULL },
   { "control", '1', 0, 
     G_OPTION_ARG_STRING, &control,
     N_("Control branch"), N_("BRANCH") },
@@ -138,8 +145,9 @@ int main (int argc, gchar *argv[]) {
 	}
       }
 
+      g_print (_("Starting download binaries data...\n"));
       rdb_api_get_binaries (api, &error, control, target);
-      rdb_api_compare_binary(api, &error, control, target);
+      rdb_api_compare_binary (api, &error, control, target);
     } else {
       g_print (_("Branches must be differ!\n"));
       return EXIT_FAILURE;

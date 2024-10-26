@@ -246,6 +246,9 @@ rdb_api_compare_binary
 {
   g_return_if_fail (RDB_IS_API (self));
   g_return_if_fail (error == NULL || *error == NULL);
+  gchar *control_path, *target_path;
+  control_path = g_build_path ("/", g_getenv("HOME"), "/.cache/", control, NULL);
+  target_path = g_build_path ("/", g_getenv("HOME"), "/.cache/", target, NULL);
 }
 
 goffset progress_counter;
