@@ -152,8 +152,8 @@ main (int argc, gchar * argv[])
 		    }
 		}
 
-	      g_print (_("Starting download binaries data...\n"));
-	      rdb_api_get_binaries (api, &error, control, target);
+	      if (rdb_api_get_binaries (api, &error, control, target))
+	        g_print (_("Starting download binaries data...\n"));
 	      rdb_api_compare_binary (api, &error, control, target);
 	    }
 	  else

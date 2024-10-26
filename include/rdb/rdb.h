@@ -36,7 +36,7 @@ void rdb_api_cache_check (RdbApi* self,
                           GError **error,
                           gchar *control,
                           gchar *target);
-void rdb_api_get_binaries  (RdbApi* self,
+gint rdb_api_get_binaries  (RdbApi* self,
                           GError **error,
                           gchar *control,
                           gchar *target);

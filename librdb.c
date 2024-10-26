@@ -280,19 +280,21 @@ rdb_api_get_binary (RdbApi * self, gchar * branch)
   g_object_unref (binary_data);
 }
 
-void
+gint
   rdb_api_get_binaries
   (RdbApi * self, GError ** error, gchar * control, gchar * target)
 {
-  g_return_if_fail (RDB_IS_API (self));
-  g_return_if_fail (error == NULL || *error == NULL);
+  gint trigger = 0;
 
   if (!(self->control_status) || self->control_overwrite)
     {
       rdb_api_get_binary (self, control);
+      trigger = 1;
     }
   if (!(self->target_status) || self->target_overwrite)
     {
       rdb_api_get_binary (self, target);
+      trigger = 1;
     }
+  return trigger;
 }
