@@ -40,10 +40,27 @@ meson compile
 
 ## Installation
 
+You can build RPM package using gear and hasher.
+```
+apt-get install -y gear hasher
+```
+
+From root (admin) add regular user to group
+```
+# hasher-useradd $USERNAME
+```
+
+Initiate build envoriment
+```
+gear-hsh
+```
+
+In future you can rebuild from existense env:
+```
+gear --hasher -- hsh-rebuild
+```
 
 ## Usage
-
-LC_MESSAGES setup language for program
 
 RDB_API_URL setup url for API (default [^1])
 
