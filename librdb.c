@@ -171,10 +171,8 @@ rdb_api_get_binary (RdbApi * self, gchar * method, gchar * data)
   GValue val = G_VALUE_INIT;
   g_value_init (&val, G_TYPE_STRING);
   g_object_get_property (G_OBJECT (self), method, &val);
-  g_message (method);
   g_assert (G_VALUE_HOLDS_STRING (&val));
   value = g_strdup (g_value_get_string (&val));
-  g_message (value);
   g_value_unset (&val);
   /* end value */
   path =
@@ -185,7 +183,6 @@ rdb_api_get_binary (RdbApi * self, gchar * method, gchar * data)
   GError *err = NULL;
   tmp_path =
     g_build_path ("/", "/tmp", "test", NULL);
-  g_message (tmp_path);
   g_assert (tmp_path != NULL);
 
   output_data = g_file_new_for_path (tmp_path);
