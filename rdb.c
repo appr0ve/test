@@ -101,6 +101,7 @@ main (int argc, gchar * argv[])
       exit (1);
     }
 
+  /* Handle options */
   if (print)
     {
       print_version ();

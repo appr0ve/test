@@ -1,10 +1,17 @@
 /* SPDX-License: Apache-2.0
  * SPDX-FileCopyrightText: 2024 appr0ve
  */
+/* Initiate structure for RdbApi object */
 #include <rdb/rdb.h>
+/* GFile routins */
 #include <gio/gio.h>
+/* Library for manipulating JSON data */
 #include <json-glib/json-glib.h>
 
+/* Define own object inherated GObject from GLib
+ * In that case this not neccesery, but using
+ * for demonstrative purpose.
+ */
 G_DEFINE_TYPE (RdbApi, rdb_api, G_TYPE_OBJECT)
      static void rdb_api_constructed (GObject * obj)
 {
@@ -21,6 +28,9 @@ rdb_api_finalize (GObject * obj)
   G_OBJECT_CLASS (rdb_api_parent_class)->finalize (obj);
 }
 
+/* Define properties inside RdbApi object.
+ * Zero member reserved by GLib.
+ */
 typedef enum
 {
   RDB_URL = 1,
@@ -81,7 +91,7 @@ rdb_api_get_property (GObject * object,
     }
 }
 
-
+/* Initiate default properties */
 static void
 rdb_api_class_init (RdbApiClass * klass)
 {
@@ -114,6 +124,7 @@ rdb_api_class_init (RdbApiClass * klass)
   object_class->finalize = rdb_api_finalize;
 }
 
+/* Initiate states used by download logic */
 static void
 rdb_api_init (RdbApi * self)
 {
@@ -123,6 +134,7 @@ rdb_api_init (RdbApi * self)
   self->target_overwrite = FALSE;
 }
 
+/* Method used for showing available branches */
 void
 rdb_api_get_branches (RdbApi * self, GError ** error)
 {
@@ -164,6 +176,7 @@ rdb_api_get_branches (RdbApi * self, GError ** error)
     }
 }
 
+/* Method used for showing available arches */
 void
 rdb_api_get_arches (RdbApi * self, GError ** error)
 {
@@ -209,6 +222,9 @@ rdb_api_get_arches (RdbApi * self, GError ** error)
     }
 }
 
+/* Look at files in .cache directory
+ * Assign status by result.
+ */
 void
   rdb_api_cache_check
   (RdbApi * self, GError ** error, gchar * control, gchar * target)
@@ -256,6 +272,7 @@ progress_callback (goffset current_num_bytes,
   return 0;
 }
 
+/* Get files from remote method branch_binary_packages */
 void
 rdb_api_get_binary (RdbApi * self, gchar * branch)
 {
@@ -280,6 +297,10 @@ rdb_api_get_binary (RdbApi * self, gchar * branch)
   g_object_unref (binary_data);
 }
 
+/* We are not need always redownload binaries.
+ * Because working very slowly.
+ * Check for binaries cache exist.
+ */
 gint
   rdb_api_get_binaries
   (RdbApi * self, GError ** error, gchar * control, gchar * target)
