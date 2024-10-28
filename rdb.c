@@ -39,6 +39,7 @@ static gboolean compare_packages,
   compare_packages_reverse, compare_versions = FALSE;
 static gchar *control = NULL;
 static gchar *target = NULL;
+static gchar *arch = NULL;
 
 static const GOptionEntry entries[] = {
   {"version", 'v', 0,
@@ -67,6 +68,9 @@ static const GOptionEntry entries[] = {
   {"target", '2', 0,
    G_OPTION_ARG_STRING, &target,
    N_("Target branch"), N_("BRANCH")},
+  {"target", '3', 0,
+   G_OPTION_ARG_STRING, &arch,
+   N_("Architecture"), N_("ARCH")},
   {NULL}
 };
 
@@ -106,56 +110,19 @@ main (int argc, gchar * argv[])
     {
       print_version ();
     }
-  if (control && target)
+  if (control && target && arch)
     {
       if (g_strcmp0 (control, target))
 	{
 	  if (compare_packages ||
 	      compare_packages_reverse || compare_versions)
 	    {
+	      api->compare_packages = compare_packages;
+              api->compare_packages_reverse = compare_packages_reverse;
+              api->compare_versions = compare_versions;
 	      g_print ("%s: %s\n", _("Using following url"),
-		       get_property (api, "url"));
-	      rdb_api_cache_check (api, &error, control, target);
-	      if (api->control_status)
-		{
-		  g_print ("%s %s %s",
-			   _("Cache for branch"),
-			   control, _("already exist, redownload?\n"));
-		  char decision;
-		  g_print ("[y/n] ");
-		  while (!(decision == 'y' ||
-			   decision == 'n' ||
-			   decision == 'Y' || decision == 'N'))
-		    {
-		      scanf ("%c", &decision);
-		      if (decision == 'y' || decision == 'Y')
-			{
-			  api->control_overwrite = TRUE;
-			}
-		    }
-		}
-	      if (api->target_status)
-		{
-		  g_print ("%s %s %s",
-			   _("Cache for branch"),
-			   target, _("already exist, redownload?\n"));
-		  g_print ("[y/n] ");
-		  char decision = '0';
-		  while (!(decision == 'y' ||
-			   decision == 'n' ||
-			   decision == 'Y' || decision == 'N'))
-		    {
-		      scanf ("%c", &decision);
-		      if (decision == 'y' || decision == 'Y')
-			{
-			  api->target_overwrite = TRUE;
-			}
-		    }
-		}
-
-	      if (rdb_api_get_binaries (api, &error, control, target))
-	        g_print (_("Starting download binaries data...\n"));
-	      rdb_api_compare_binary (api, &error, control, target);
+		       api->url);
+	      rdb_api_compare_binary (api, &error, control, target, arch);
 	    }
 	  else
 	    g_print (_("Select what to do with branches!\n"));
@@ -188,17 +155,4 @@ print_version ()
 {
   g_print ("%s %s\n", GETTEXT_PACKAGE, VERSION);
   return NULL;
-}
-
-gchar *
-get_property (RdbApi * api, gchar * property)
-{
-  gchar *value;
-  GValue val = G_VALUE_INIT;
-  g_value_init (&val, G_TYPE_STRING);
-  g_object_get_property (G_OBJECT (api), property, &val);
-  g_assert (G_VALUE_HOLDS_STRING (&val));
-  value = g_strdup (g_value_get_string (&val));
-  g_value_unset (&val);
-  return value;
 }

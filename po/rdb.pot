@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rdb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-26 08:40+0300\n"
+"POT-Creation-Date: 2024-10-28 11:34+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,70 +17,66 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: rdb.c:48
+#: rdb.c:47
 msgid "Print version"
 msgstr ""
 
-#: rdb.c:51
+#: rdb.c:50
 msgid "List availaible branches"
 msgstr ""
 
-#: rdb.c:54
+#: rdb.c:53
 msgid "List CPU arch-s available"
 msgstr ""
 
-#: rdb.c:57
+#: rdb.c:56
 msgid "Show difference existence between packages within two branches"
 msgstr ""
 
-#: rdb.c:61
+#: rdb.c:60
 msgid "Reverse-order mode"
 msgstr ""
 
-#: rdb.c:64
+#: rdb.c:63
 msgid "Show difference version between packages within two branches"
 msgstr ""
 
-#: rdb.c:68
+#: rdb.c:67
 msgid "Control branch"
 msgstr ""
 
-#: rdb.c:68 rdb.c:71
+#: rdb.c:67 rdb.c:70
 msgid "BRANCH"
 msgstr ""
 
-#: rdb.c:71
+#: rdb.c:70
 msgid "Target branch"
 msgstr ""
 
-#: rdb.c:93
+#: rdb.c:73
+msgid "Architecture"
+msgstr ""
+
+#: rdb.c:73
+msgid "ARCH"
+msgstr ""
+
+#: rdb.c:97
 msgid "- Show how to use rdb client"
 msgstr ""
 
-#: rdb.c:100
+#: rdb.c:104
 msgid "Option parsing failed"
 msgstr ""
 
-#: rdb.c:115
+#: rdb.c:123
 msgid "Using following url"
 msgstr ""
 
-#: rdb.c:119 rdb.c:136
-msgid "Cache for branch"
-msgstr ""
-
-#: rdb.c:121 rdb.c:138
-msgid "already exist, redownload?\n"
-msgstr ""
-
-#: rdb.c:152
-msgid "Starting download binaries data...\n"
-msgstr ""
-
-#: rdb.c:156
+#: rdb.c:128
 msgid "Select what to do with branches!\n"
 msgstr ""
 
-#: rdb.c:158
+#: rdb.c:132
 msgid "Branches must be differ!\n"
 msgstr ""

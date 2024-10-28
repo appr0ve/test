@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: rdb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-26 08:40+0300\n"
+"POT-Creation-Date: 2024-10-28 11:34+0300\n"
 "PO-Revision-Date: 2024-10-23 08:27+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -18,70 +18,66 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: rdb.c:48
+#: rdb.c:47
 msgid "Print version"
 msgstr "Вывести версию"
 
-#: rdb.c:51
+#: rdb.c:50
 msgid "List availaible branches"
 msgstr "Список доступных веток"
 
-#: rdb.c:54
+#: rdb.c:53
 msgid "List CPU arch-s available"
 msgstr "Список доступных архитектур ЦП"
 
-#: rdb.c:57
+#: rdb.c:56
 msgid "Show difference existence between packages within two branches"
 msgstr "Показать разницу между существующими пакетами в двух ветках"
 
-#: rdb.c:61
+#: rdb.c:60
 msgid "Reverse-order mode"
 msgstr "Режим обратного порядка"
 
-#: rdb.c:64
+#: rdb.c:63
 msgid "Show difference version between packages within two branches"
 msgstr "Показать разницу версий между пакетами в двух ветках"
 
-#: rdb.c:68
+#: rdb.c:67
 msgid "Control branch"
 msgstr "Контрольная ветка"
 
-#: rdb.c:68 rdb.c:71
+#: rdb.c:67 rdb.c:70
 msgid "BRANCH"
 msgstr "ВЕТКА"
 
-#: rdb.c:71
+#: rdb.c:70
 msgid "Target branch"
 msgstr "Целевая ветка"
 
-#: rdb.c:93
+#: rdb.c:73
+msgid "Architecture"
+msgstr "Архитектура"
+
+#: rdb.c:73
+msgid "ARCH"
+msgstr "АРХИТЕКТУРА"
+
+#: rdb.c:97
 msgid "- Show how to use rdb client"
 msgstr "- показывает, как использовать клиент rdb"
 
-#: rdb.c:100
+#: rdb.c:104
 msgid "Option parsing failed"
 msgstr "Ошибка разбора аргумента"
 
-#: rdb.c:115
+#: rdb.c:123
 msgid "Using following url"
 msgstr "Используется следующая ссылка"
 
-#: rdb.c:119 rdb.c:136
-msgid "Cache for branch"
-msgstr "Данные для ветки"
-
-#: rdb.c:121 rdb.c:138
-msgid "already exist, redownload?\n"
-msgstr "уже существуют, перезагрузить?\n"
-
-#: rdb.c:152
-msgid "Starting download binaries data...\n"
-msgstr "Начинается загрузка бинарных данных...\n"
-
-#: rdb.c:156
+#: rdb.c:128
 msgid "Select what to do with branches!\n"
 msgstr "Выберите что делать с ветками!\n"
 
-#: rdb.c:158
+#: rdb.c:132
 msgid "Branches must be differ!\n"
 msgstr "Ветки должны быть различны!\n"

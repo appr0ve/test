@@ -36,6 +36,7 @@ typedef enum
   RDB_URL = 1,
   METHOD_BINARY,
   METHOD_BRANCH,
+  METHOD_ARCH,
   N_PROPERTIES
 } RdbApiProperty;
 
@@ -62,6 +63,10 @@ rdb_api_set_property (GObject * object,
       g_free (self->method_branch);
       self->method_branch = g_value_dup_string (value);
       break;
+    case METHOD_ARCH:
+      g_free (self->method_arch);
+      self->method_arch = g_value_dup_string (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -85,6 +90,10 @@ rdb_api_get_property (GObject * object,
     case METHOD_BRANCH:
       g_value_set_string ((GValue *) value, self->method_branch);
       break;
+    case METHOD_ARCH:
+      g_value_set_string ((GValue *) value, self->method_arch);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
       break;
@@ -117,6 +126,12 @@ rdb_api_class_init (RdbApiClass * klass)
 			 "Method name for get list of available branches",
 			 "errata/errata_branches",
 			 G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
+  obj_properties[METHOD_ARCH] =
+    g_param_spec_string ("method-arch",
+			 "ARCH",
+			 "Method name for get list of available branches",
+			 "site/all_pkgset_archs?branch=p11",
+			 G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
   g_object_class_install_properties (object_class,
 				     N_PROPERTIES, obj_properties);
 
@@ -128,10 +143,133 @@ rdb_api_class_init (RdbApiClass * klass)
 static void
 rdb_api_init (RdbApi * self)
 {
-  self->control_status = FALSE;
-  self->target_status = FALSE;
-  self->control_overwrite = FALSE;
-  self->target_overwrite = FALSE;
+  self->compare_packages = FALSE;
+  self->compare_packages_reverse = FALSE;
+  self->compare_versions = FALSE;
+}
+
+goffset progress_counter;
+
+GFileProgressCallback
+progress_callback (goffset current_num_bytes,
+		   goffset total_num_bytes, gpointer user_data)
+{
+  progress_counter = current_num_bytes / 1024;
+  total_num_bytes /= 1024;
+  g_print ("%s: %ld / %ld\r", (gchar *) user_data, progress_counter,
+	   total_num_bytes);
+  return 0;
+}
+
+GInputStream *
+rdb_api_get_binary (RdbApi * self, gchar * method, gchar * data)
+{
+  GFile *binary_data;
+  GFile *output_data;
+  gchar *path, *tmp_path, *value;
+  /* value */
+  GValue val = G_VALUE_INIT;
+  g_value_init (&val, G_TYPE_STRING);
+  g_object_get_property (G_OBJECT (self), method, &val);
+  g_message (method);
+  g_assert (G_VALUE_HOLDS_STRING (&val));
+  value = g_strdup (g_value_get_string (&val));
+  g_message (value);
+  g_value_unset (&val);
+  /* end value */
+  path =
+    g_build_path ("/", self->url, value, data,
+		  NULL);
+  g_message (path);
+  binary_data = g_file_new_for_uri (path);
+  GError *err = NULL;
+  tmp_path =
+    g_build_path ("/", "/tmp", "test", NULL);
+  g_message (tmp_path);
+  g_assert (tmp_path != NULL);
+
+  output_data = g_file_new_for_path (tmp_path);
+
+  if (data) {
+    progress_counter = (goffset) & self->download_counter;
+    g_file_copy (binary_data, output_data, G_FILE_COPY_OVERWRITE,
+	       NULL, (GFileProgressCallback) progress_callback, data, &err);
+  } else {
+    g_file_copy (binary_data, output_data, G_FILE_COPY_OVERWRITE,
+	       NULL, NULL, data, &err);
+  }
+  g_assert_no_error (err);
+
+  GFileInputStream *stream = g_file_read (output_data, NULL, &err);
+  g_assert_no_error (err);
+
+  g_object_unref (binary_data);
+  return (GInputStream*) stream;
+}
+
+JsonArray *
+rdb_api_get_array_packages
+(JsonParser *parser, GInputStream * stream, GError  *** error)
+{
+  JsonNode *node;
+  JsonObject *obj;
+  JsonArray *array;
+  json_parser_load_from_stream (
+    parser, G_INPUT_STREAM (stream), NULL, (GError **) error);
+  node = json_parser_get_root (parser);
+  g_assert (node != NULL);
+  g_assert (JSON_NODE_HOLDS_OBJECT (node));
+  obj = json_node_get_object (node);
+  array = json_object_get_array_member (obj, "packages");
+
+  return array;
+}
+
+void
+  rdb_api_compare_binary
+  (RdbApi * self, GError ** error, gchar * control, gchar * target, gchar * arch)
+{
+  g_return_if_fail (RDB_IS_API (self));
+  g_return_if_fail (error == NULL || *error == NULL);
+
+  GInputStream * control_binary =
+    rdb_api_get_binary (self, "method-binary",
+      g_strconcat(control, "?arch=", arch, NULL));
+  GInputStream * target_binary =
+    rdb_api_get_binary (self, "method-binary",
+      g_strconcat(target, "?arch=", arch, NULL));
+  g_assert (control_binary != NULL);
+  g_assert (target_binary != NULL);
+
+  JsonArray *control_array, *target_array;
+
+  JsonParser *parser, *parser2;
+  parser = json_parser_new ();
+  parser2 = json_parser_new ();
+
+  control_array =
+    rdb_api_get_array_packages (parser, control_binary, &error);
+  target_array =
+    rdb_api_get_array_packages (parser2, target_binary, &error);
+
+  JsonBuilder *builder = json_builder_new ();
+  json_builder_begin_object (builder);
+  json_builder_set_member_name (builder, "");
+  json_builder_begin_array (builder);
+
+  if (self->compare_versions) {
+  gint count = json_array_get_length (control_array);
+  gint i;
+  JsonNode *nod[count];
+  JsonObject *objj[count];
+  for (i = 0; i < count; i++)
+    {
+      nod[i] = json_array_get_element (control_array, i);
+      g_assert (JSON_NODE_HOLDS_OBJECT (nod[i]));
+      objj[i] = json_node_get_object (nod[i]);
+      g_print ("%s\n", json_object_get_string_member (objj[i], "name"));
+    }
+  }
 }
 
 /* Method used for showing available branches */
@@ -140,24 +278,14 @@ rdb_api_get_branches (RdbApi * self, GError ** error)
 {
   g_return_if_fail (RDB_IS_API (self));
   g_return_if_fail (error == NULL || *error == NULL);
-
-  GFile *branches;
-  g_assert (self->url != NULL);
-  gchar *errata;
-  errata =
-    g_build_path ("/", (gchar *) self->url, "errata/errata_branches", NULL);
-  g_assert (errata != NULL);
-  branches = g_file_new_for_uri (errata);
-  GError *err = NULL;
-  GFileInputStream *stream = g_file_read (branches, NULL, &err);
-  g_assert_no_error (err);
+  GInputStream *stream;
+  stream = rdb_api_get_binary (self, "method-branch", NULL);
 
   JsonParser *parser;
   JsonNode *node;
 
   parser = json_parser_new ();
-  json_parser_load_from_stream (parser, G_INPUT_STREAM (stream), NULL, &err);
-  g_assert_no_error (err);
+  json_parser_load_from_stream (parser, G_INPUT_STREAM (stream), NULL, error);
   g_assert (stream != NULL);
 
   node = json_parser_get_root (parser);
@@ -182,22 +310,14 @@ rdb_api_get_arches (RdbApi * self, GError ** error)
 {
   g_return_if_fail (RDB_IS_API (self));
   g_return_if_fail (error == NULL || *error == NULL);
-
-  GFile *arches;
-  const gchar *errata;
-  errata =
-    g_build_path ("/", self->url, "site/all_pkgset_archs?branch=p10", NULL);
-  arches = g_file_new_for_uri (errata);
-  GError *err = NULL;
-  GFileInputStream *stream = g_file_read (arches, NULL, &err);
-  g_assert_no_error (err);
+  GInputStream *stream;
+  stream = rdb_api_get_binary (self, "method-arch", NULL);
 
   JsonParser *parser;
   JsonNode *node;
 
   parser = json_parser_new ();
-  json_parser_load_from_stream (parser, G_INPUT_STREAM (stream), NULL, &err);
-  g_assert_no_error (err);
+  json_parser_load_from_stream (parser, G_INPUT_STREAM (stream), NULL, error);
   g_assert (stream != NULL);
 
   node = json_parser_get_root (parser);
@@ -220,102 +340,4 @@ rdb_api_get_arches (RdbApi * self, GError ** error)
       objj[i] = json_node_get_object (nod[i]);
       g_print ("%s\n", json_object_get_string_member (objj[i], "arch"));
     }
-}
-
-/* Look at files in .cache directory
- * Assign status by result.
- */
-void
-  rdb_api_cache_check
-  (RdbApi * self, GError ** error, gchar * control, gchar * target)
-{
-  g_return_if_fail (RDB_IS_API (self));
-  g_return_if_fail (error == NULL || *error == NULL);
-
-  GFile *ctl_file;
-  GFile *tgt_file;
-
-  control = g_build_path ("/", g_getenv ("HOME"), ".cache", control, NULL);
-  ctl_file = g_file_new_for_path (control);
-  target = g_build_path ("/", g_getenv ("HOME"), ".cache", target, NULL);
-  tgt_file = g_file_new_for_path (target);
-
-  if (g_file_query_exists (ctl_file, NULL))
-    self->control_status = TRUE;
-  if (g_file_query_exists (tgt_file, NULL))
-    self->target_status = TRUE;
-}
-
-void
-  rdb_api_compare_binary
-  (RdbApi * self, GError ** error, gchar * control, gchar * target)
-{
-  g_return_if_fail (RDB_IS_API (self));
-  g_return_if_fail (error == NULL || *error == NULL);
-  gchar *control_path, *target_path;
-  control_path =
-    g_build_path ("/", g_getenv ("HOME"), "/.cache/", control, NULL);
-  target_path =
-    g_build_path ("/", g_getenv ("HOME"), "/.cache/", target, NULL);
-}
-
-goffset progress_counter;
-
-GFileProgressCallback
-progress_callback (goffset current_num_bytes,
-		   goffset total_num_bytes, gpointer user_data)
-{
-  progress_counter = current_num_bytes / 1024;
-  total_num_bytes /= 1024;
-  g_print ("%s: %ld / %ld\r", (gchar *) user_data, progress_counter,
-	   total_num_bytes);
-  return 0;
-}
-
-/* Get files from remote method branch_binary_packages */
-void
-rdb_api_get_binary (RdbApi * self, gchar * branch)
-{
-  GFile *binary_data;
-  GFile *output_data;
-  gchar *path;
-  path =
-    g_build_path ("/", self->url, "export/branch_binary_packages", branch,
-		  NULL);
-  binary_data = g_file_new_for_uri (path);
-  GError *err = NULL;
-  gchar *branch_path;
-  branch_path =
-    g_build_path ("/", g_getenv ("HOME"), "/.cache/", branch, NULL);
-  output_data = g_file_new_for_path (branch_path);
-  g_assert_no_error (err);
-
-  progress_counter = (goffset) & self->download_counter;
-  g_file_copy (binary_data, output_data, G_FILE_COPY_OVERWRITE,
-	       NULL, (GFileProgressCallback) progress_callback, branch, &err);
-  g_assert_no_error (err);
-  g_object_unref (binary_data);
-}
-
-/* We are not need always redownload binaries.
- * Because working very slowly.
- * Check for binaries cache exist.
- */
-gint
-  rdb_api_get_binaries
-  (RdbApi * self, GError ** error, gchar * control, gchar * target)
-{
-  gint trigger = 0;
-
-  if (!(self->control_status) || self->control_overwrite)
-    {
-      rdb_api_get_binary (self, control);
-      trigger = 1;
-    }
-  if (!(self->target_status) || self->target_overwrite)
-    {
-      rdb_api_get_binary (self, target);
-      trigger = 1;
-    }
-  return trigger;
 }
