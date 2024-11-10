@@ -1,4 +1,3 @@
-%global with_build_gnu 0
 Name: rdb
 Version: 1
 Release: alt1
