@@ -27,12 +27,14 @@ none
 %setup -n %name-%version
 
 %build
-%{?_build_meson}
-%meson
-%meson_build
-%endif
+%autoreconf %{?_build_gnu}
+%configure %{?_build_gnu}
+%make_build %{?_build_gnu}
+%meson %{?_build_meson}
+%meson_build %{?_build_meson}
 
 %install
+%makeinstall %{?_build_gnu}
 %meson_install %{?_build_meson}
 
 %check
@@ -42,7 +44,7 @@ none
 %_bindir/%name
 %_libdir/lib%{name}.so
 %_datadir/locale/*/LC_MESSAGES/%name.mo
-%doc README.md
+%doc README.org
 
 %changelog
 * Thu Oct 24 2024 Joe Hacker <joe@altlinux.org> 1-alt1
