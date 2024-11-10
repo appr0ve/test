@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: 2024 appr0ve
  */
 /* Initiate structure for RdbApi object */
-#include <rdb/rdb.h>
+#include <rdb.h>
 /* GFile routins */
 #include <gio/gio.h>
 /* Library for manipulating JSON data */

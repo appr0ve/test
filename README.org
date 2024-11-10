@@ -1,0 +1,77 @@
+rdb
+
+rdb is an codename for client and shared library
+for interact with ALTRepo API[[#swagger][1]].
+
+Just now, using methods:
+- export/branch_binary_packages
+- errata/errata_branches
+- site/all_pkgset_archs
+
+* Building
+** Step 1: get source code
+Use one of these methods:
+#+BEGIN_SRC shell
+git clone https://github.com/appr0ve/test
+#+END_SRC
+
+#+BEGIN_SRC shell
+wget https://github.com/appr0ve/test/archive/refs/heads/main.tar.gz
+tar xf main.tar.gz
+#+END_SRC
+
+** Step 2: prepare build enviroment
+
+** Step 3: building package
+*** GNU package
+#+BEGIN_SRC shell
+./autogen.sh
+#+END_SRC
+
+*** ALT package
+**** GNU build system
+#+BEGIN_SRC shell
+./geargen.sh gnu
+#+END_SRC
+**** meson build system
+#+BEGIN_SRC shell
+./geargen.sh meson
+#+END_SRC
+
+
+** Step 4 (optional): installation
+
+* Usage
+
+RDB_API_URL setup url for API (default [^1])
+
+See more on
+#+BEGIN_SRC shell
+rdb -help
+#+END_SRC
+
+
+* Localization test (for translators)
+
+Refresh template:
+#+BEGIN_SRC shell
+meson compile rdb-pot
+#+END_SRC
+
+Generate locale file [^3]:
+#+BEGIN_SRC shell
+meson compile rdb-update-po
+#+END_SRC
+
+Assign locale directory:
+#+BEGIN_SRC shell
+meson configure $PREFER_BUILD_DIR --localedir=$PREFER_BUILD_DIR/po
+#+END_SRC
+
+* Footnotes
+[fn:1] [[https://git.altlinux.org/srpms/g/glib2.git?p=glib2.git;a=snapshot;h=refs/heads/p10;sf=tgz][GLib source code for p10 branch]]
+** swagger
+[[https://rdb.altlinux.org/api/swagger.json][ALTRepo API swagger file]]
+[^1]: https://rdb.altlinux.org/api/
+[^2]: You can specify that by `-C` option.
+[^3]: Languages defined in `po/LINGUAS`

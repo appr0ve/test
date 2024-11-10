@@ -18,7 +18,7 @@
 #include <stdio.h>
 
 /* RDB API shared library */
-#include <rdb/rdb.h>
+#include <rdb.h>
 
 /* Options related stuff */
 /* Stub for help option
@@ -89,14 +89,14 @@ main (int argc, gchar * argv[])
 
   /* Initialize gettext routines */
   setlocale (LC_ALL, "");
-  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
+  bindtextdomain (PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (PACKAGE, "UTF-8");
+  textdomain (PACKAGE);
 
   /* Register new context */
   context = g_option_context_new N_("- Show how to use rdb client");
-  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
-  g_option_context_set_translation_domain (context, GETTEXT_PACKAGE);
+  g_option_context_add_main_entries (context, entries, PACKAGE);
+  g_option_context_set_translation_domain (context, PACKAGE);
 
   /* Validate recieved options */
   if (!g_option_context_parse (context, &argc, &argv, &error))
@@ -153,6 +153,6 @@ main (int argc, gchar * argv[])
 gpointer
 print_version ()
 {
-  g_print ("%s %s\n", GETTEXT_PACKAGE, VERSION);
+  g_print ("%s %s\n", PACKAGE, VERSION);
   return NULL;
 }
