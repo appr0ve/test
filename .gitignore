@@ -4,9 +4,12 @@
 !*.h
 !*.am
 config.h
+!po/*.po
+!po/*.pot
 !autogen.sh
 !geargen.sh
 !.gear/rules
 !meson.build
 !.gear/*.spec
 !configure.ac
+!po/POTFILES.in
