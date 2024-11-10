@@ -1,3 +1,5 @@
+%bcond build_gnu 0
+%bcond build_meson 1
 Name: rdb
 Version: 1
 Release: alt1
@@ -27,18 +29,28 @@ none
 %setup -n %name-%version
 
 %build
-%autoreconf %{?_build_gnu}
-%configure %{?_build_gnu}
-%make_build %{?_build_gnu}
-%meson %{?_build_meson}
-%meson_build %{?_build_meson}
+%if %{with build_gnu}
+%autoreconf
+%configure
+%make_build
+%endif
+%if %{with build_meson}
+%meson
+%meson_build
+%endif
 
 %install
-%makeinstall %{?_build_gnu}
-%meson_install %{?_build_meson}
+%if %{with build_gnu}
+%makeinstall
+%endif
+%if %{with build_meson}
+%meson_install
+%endif
 
 %check
-%meson_test %{?_build_meson}
+%if %{with build_meson}
+%meson_test
+%endif
 
 %files
 %_bindir/%name
