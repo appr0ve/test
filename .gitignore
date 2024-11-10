@@ -4,9 +4,9 @@
 !*.h
 !*.am
 config.h
-!.gear/*.spec
 !autogen.sh
 !geargen.sh
 !.gear/rules
 !meson.build
+!.gear/*.spec
 !configure.ac

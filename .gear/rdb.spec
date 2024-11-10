@@ -11,7 +11,6 @@ Url: https://github.com/appr0ve/test
 VCS: https://github.com/appr0ve/test.git
 Source: %name-%version.tar
 Packager: Joe Hacker <joe@altlinux.org>
-:
 
 Requires: glib2 libgio libjson-glib
 
