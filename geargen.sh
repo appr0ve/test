@@ -4,9 +4,10 @@ BUILD_SYSTEM="$1"
 
 function build() {
   if [ "$BUILD_SYSTEM" == 'gnu' ]; then
-    gear --hasher -- hsh-rebuild
+    gear --hasher -- hsh-rebuild \
+      --rpmbuild-args='--define build_system gnu'
   elif [ "$BUILD_SYSTEM" == 'meson' ]; then
-    gear --hasher -- hsh-rebuild --rpmbuild-args='--with build_gnu'
+    gear --hasher -- hsh-rebuild
   else echo 'Wrong build system!'
   fi
 }

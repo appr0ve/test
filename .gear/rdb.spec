@@ -27,7 +27,7 @@ none
 %setup -n %name-%version
 
 %build
-%if %{with_build_gnu}
+%if %{build_system} == "gnu"
 %autoreconf
 %configure
 %make_build
@@ -37,14 +37,14 @@ none
 %endif
 
 %install
-%if %{with_build_gnu}
+%if %{build_system} == "gnu"
 %makeinstall
 %else
 %meson_install
 %endif
 
 %check
-%if %{with_build_gnu}
+%if %{build_system} == "gnu"
 %else
 %meson_test
 %endif
