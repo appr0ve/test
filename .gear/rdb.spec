@@ -1,4 +1,4 @@
-%global build_system 0
+%global build_gnu 0
 Name: rdb
 Version: 1
 Release: alt1
@@ -28,26 +28,26 @@ none
 %setup -n %name-%version
 
 %build
-%if 0%{build_system} == 1
+%if 0%{build_gnu} == 1
 %autoreconf
 %configure
 %make_build
 %endif
-%if 0%{build_system} == 0
+%if 0%{build_gnu} == 0
 %meson
 %meson_build
 %endif
 
 %install
-%if 0%{build_system} == 0
+%if 0%{build_gnu} == 1
 %makeinstall
 %endif
-%if 0%{build_system} == 1
+%if 0%{build_gnu} == 0
 %meson_install
 %endif
 
 %check
-%if 0%{build_system} == 1
+%if 0%{build_gnu} == 1
 %meson_test
 %endif
 
