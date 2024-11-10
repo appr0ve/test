@@ -10,13 +10,12 @@ Just now, using methods:
 
 * Building
 ** Step 1: get source code
-Use one of these methods:
 #+BEGIN_SRC shell
-git clone https://github.com/appr0ve/test
+git clone "https://github.com/appr0ve/test"
 #+END_SRC
-
+or
 #+BEGIN_SRC shell
-wget https://github.com/appr0ve/test/archive/refs/heads/main.tar.gz
+wget "https://github.com/appr0ve/test/archive/refs/heads/main.tar.gz"
 tar xf main.tar.gz
 #+END_SRC
 
@@ -72,6 +71,3 @@ meson configure $PREFER_BUILD_DIR --localedir=$PREFER_BUILD_DIR/po
 [fn:1] [[https://git.altlinux.org/srpms/g/glib2.git?p=glib2.git;a=snapshot;h=refs/heads/p10;sf=tgz][GLib source code for p10 branch]]
 ** swagger
 [[https://rdb.altlinux.org/api/swagger.json][ALTRepo API swagger file]]
-[^1]: https://rdb.altlinux.org/api/
-[^2]: You can specify that by `-C` option.
-[^3]: Languages defined in `po/LINGUAS`
